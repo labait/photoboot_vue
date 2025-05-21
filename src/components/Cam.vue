@@ -1,8 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { storage, db } from '../firebase';
-import { ref as storageRef, uploadString, getDownloadURL } from 'firebase/storage';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { ref, onMounted, getCurrentInstance } from 'vue';
 
 const video = ref(null);
 const canvas = ref(null);
@@ -10,6 +7,9 @@ const image = ref(null);
 const videoDevices = ref([]);
 const selectedDevice = ref('');
 const isUploading = ref(false);
+
+// Get the current instance to access the global saveImageFrom function
+const { proxy } = getCurrentInstance();
 
 onMounted(async () => {
   await getVideoDevices();
@@ -83,35 +83,22 @@ async function shot() {
   link.href = image.value;
   link.click();
   
-  // Upload to Firebase
+  // Use the global saveImageFrom function
   try {
     isUploading.value = true;
-    // Create a unique filename
-    const timestamp = new Date().getTime();
-    const filename = `photo_${timestamp}.png`;
-    const imageRef = storageRef(storage, `images/${filename}`);
     
-    // Upload the image (data URL) to Firebase Storage
-    await uploadString(imageRef, image.value, 'data_url');
+    // Call the globally registered saveImageFrom function
+    const result = await proxy.saveImageFrom(image.value);
     
-    // Get the download URL
-    const downloadURL = await getDownloadURL(imageRef);
-    
-    // Save the reference in Firestore
-    const docRef = await addDoc(collection(db, 'items'), {
-      image_from: downloadURL,
-      timestamp: serverTimestamp(),
-      filename: filename
-    });
-    
-    console.log('Image uploaded successfully!');
-    console.log('Storage path:', `images/${filename}`);
-    console.log('Firestore document ID:', docRef.id);
-    console.log('Download URL:', downloadURL);
+    if (result.success) {
+      console.log('Image processed successfully with result:', result);
+    } else {
+      console.error('Error processing image:', result.error);
+    }
     
     isUploading.value = false;
   } catch (error) {
-    console.error('Error uploading image:', error);
+    console.error('Error processing image:', error);
     isUploading.value = false;
   }
 }
