@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, getCurrentInstance } from 'vue';
+import { ref, onMounted, inject } from 'vue';
 import Header from './Header.vue';
 import polaroid from './Polaroid.vue';
 
@@ -10,8 +10,7 @@ const videoDevices = ref([]);
 const selectedDevice = ref('');
 const isUploading = ref(false);
 
-// Get the current instance to access the global saveImageFrom function
-const { proxy } = getCurrentInstance();
+const saveImage = inject('saveImage');
 
 onMounted(async () => {
   await getVideoDevices();
@@ -85,12 +84,10 @@ async function shot() {
   link.href = image.value;
   link.click();
   
-  // Use the global saveImageFrom function
   try {
     isUploading.value = true;
     
-    // Call the globally registered saveImageFrom function
-    const result = await proxy.saveImageFrom(image.value);
+    const result = await saveImage(image.value);
     
     if (result.success) {
       console.log('Image processed successfully with result:', result);
