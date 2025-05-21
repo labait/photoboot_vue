@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SplashScreen from '../components/SplashScreen.vue'
 import TestComponent from '../components/TestComponent.vue'
+import List from '../components/List.vue'
+
 
 const routes = [
   {
@@ -12,6 +14,11 @@ const routes = [
     path: '/test',
     name: 'test',
     component: TestComponent
+  },
+  {
+    path: '/list',
+    name: 'list',
+    component: List,
   }
 ]
 
