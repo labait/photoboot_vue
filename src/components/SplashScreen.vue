@@ -5,7 +5,9 @@ import Header from './Header.vue';
 
 <template>
   <Header title="Benvenut*" />
-  <polaroid :image="image" class="mb-8" />
+  <polaroid class="mb-8">
+    
+  </polaroid>
   <div class="flex space-x-4">
     <router-link to="/cam" class="px-6 py-3 bg-white text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors">
       Accendiamo la camera!

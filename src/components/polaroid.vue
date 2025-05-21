@@ -12,7 +12,7 @@ const props = defineProps({
 <template>
     <div class="polaroid">
        <div class="polaroid-inner">
-            <img :src="image" alt="Polaroid Image" class="polaroid-image">
+            <slot /> 
        </div>
     </div>
 </template>

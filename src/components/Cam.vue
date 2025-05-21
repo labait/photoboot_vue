@@ -108,8 +108,10 @@ async function shot() {
 
 <template>
   <Header title="Mettiti in posa" />
-  <polaroid v-if="image" :image="image" class="mb-8" />
-  <video ref="video" class="cam object-cover"></video>
+  <polaroid class="mb-8">
+    <video ref="video" class="cam object-cover"></video>
+  </polaroid>
+  
   <select v-model="selectedDevice" @change="changeCamera" class="mt-2 p-2 rounded">
     <option v-for="device in videoDevices" :key="device.deviceId" :value="device.deviceId">
       {{ device.label || `Camera ${videoDevices.indexOf(device) + 1}` }}
@@ -124,11 +126,8 @@ async function shot() {
 
 <style scoped>
 .cam {
-    border: 1px solid red;
-    min-width: 300px;
-    min-height: 300px;
-    max-width: 800px;
-    max-height: 800px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
 }
 </style>
