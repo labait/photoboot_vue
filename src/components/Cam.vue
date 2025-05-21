@@ -1,5 +1,7 @@
 <script setup>
 import { ref, onMounted, getCurrentInstance } from 'vue';
+import Header from './Header.vue';
+import polaroid from './Polaroid.vue';
 
 const video = ref(null);
 const canvas = ref(null);
@@ -105,14 +107,9 @@ async function shot() {
 </script>
 
 <template>
-  <img src="../../public/images/logo_laba.svg" alt="Logo" class="w-48 mb-8">
-  <h1 class="text-5xl font-bold text-white mb-8">Mettiti in posa</h1>
+  <Header title="Mettiti in posa" />
   <polaroid v-if="image" :image="image" class="mb-8" />
-
-
-    <video ref="video" class="cam object-cover"></video>
-
-  
+  <video ref="video" class="cam object-cover"></video>
   <select v-model="selectedDevice" @change="changeCamera" class="mt-2 p-2 rounded">
     <option v-for="device in videoDevices" :key="device.deviceId" :value="device.deviceId">
       {{ device.label || `Camera ${videoDevices.indexOf(device) + 1}` }}
