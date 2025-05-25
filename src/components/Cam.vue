@@ -98,15 +98,18 @@ async function shot() {
       console.log('Image processed successfully with result:', result);
       // go to detail page
       config.value.isUploading = false
+      config.value.isLoading = false
       router.push(`/detail/${config.value.doc.id}`);
     } else {
       console.error('Error processing image');
     }
     
     isUploading.value = false;
+    config.value.isLoading = false
   } catch (error) {
     console.error('Error processing image:', error);
     isUploading.value = false;
+    config.value.isLoading = false
   }
 }
 </script>
