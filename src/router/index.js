@@ -3,6 +3,7 @@ import SplashScreen from '../components/SplashScreen.vue'
 import TestComponent from '../components/TestComponent.vue'
 import List from '../components/List.vue'
 import Cam from '../components/Cam.vue'
+import Detail from '../components/Detail.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/list',
     name: 'list',
     component: List,
+  },
+  {
+    path: '/detail/:docId',
+    name: 'detail',
+    component: Detail,
   }
 ]
 

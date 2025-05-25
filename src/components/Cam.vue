@@ -1,7 +1,11 @@
 <script setup>
 import { ref, onMounted, inject } from 'vue';
+import { useRouter } from 'vue-router';
+
 import Header from './Header.vue';
 import polaroid from './Polaroid.vue';
+
+const router = useRouter();
 
 const video = ref(null);
 const canvas = ref(null);
@@ -79,20 +83,24 @@ async function shot() {
   image.value = canvas.value.toDataURL('image/png');
   
   // Download a local copy
-  const link = document.createElement('a');
-  link.download = 'photo.png';
-  link.href = image.value;
-  link.click();
+  if(config.value.debug) {
+    const link = document.createElement('a');
+    link.download = `photo-.png`;
+    link.href = image.value;
+    link.click();
+  }
   
   try {
     isUploading.value = true;
-    
-    const result = await saveImage(image.value);
-    
-    if (result.success) {
+    const filename = `photo-${new Date().getTime()}.png`
+    const result = await saveImage(image.value, filename);
+    if (result) {
       console.log('Image processed successfully with result:', result);
+      // go to detail page
+      config.value.isUploading = false
+      router.push(`/detail/${config.value.doc.id}`);
     } else {
-      console.error('Error processing image:', result.error);
+      console.error('Error processing image');
     }
     
     isUploading.value = false;
@@ -126,5 +134,6 @@ async function shot() {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transform: scaleX(-1); /* Mirror the webcam image horizontally */
 }
 </style>

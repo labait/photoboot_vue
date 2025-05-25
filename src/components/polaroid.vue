@@ -1,12 +1,6 @@
 <script setup>
 import { ref,defineProps } from 'vue';
 
-const props = defineProps({
-    image: {
-        type: String,
-        required: true
-    }
-})
 </script>
 
 <template>
