@@ -29,7 +29,7 @@ async function getVideoDevices() {
     const permission = await navigator.mediaDevices.getUserMedia({ video: true });
     const devices = await navigator.mediaDevices.enumerateDevices();
     videoDevices.value = devices.filter(device => device.kind === 'videoinput');
-    console.log(videoDevices.value);
+    //console.log(videoDevices.value);
   } catch (error) {
     console.error('Error getting video devices:', error);
   }
@@ -65,6 +65,10 @@ async function changeCamera() {
 
 async function shot() {
   if (!video.value) return;
+
+  const imageId = `${new Date().getTime()}`
+  const imageExtension = 'jpg'
+  const imageFilename = `${imageId}.${imageExtension}`
   
   // Create canvas if it doesn't exist
   if (!canvas.value) {
@@ -80,22 +84,21 @@ async function shot() {
   ctx.drawImage(video.value, 0, 0, canvas.value.width, canvas.value.height);
   
   // Get image as data URL
-  image.value = canvas.value.toDataURL('image/png');
+  image.value = canvas.value.toDataURL(`image/${imageExtension}`);
   
   // Download a local copy
   if(config.value.debug) {
     const link = document.createElement('a');
-    link.download = `photo-.png`;
+    link.download = `${imageFilename}`;
     link.href = image.value;
     link.click();
   }
   
   try {
     isUploading.value = true;
-    const filename = `photo-${new Date().getTime()}.png`
-    const result = await uploadImage(image.value, filename);
+    const result = await uploadImage(image.value, imageId);
     if (result) {
-      console.log('Image processed successfully with result:', result);
+      //console.log('Image processed successfully with result:', result);
       // go to detail page
       config.value.isUploading = false
       config.value.isLoading = false
@@ -120,7 +123,7 @@ async function shot() {
     <video ref="video" class="cam object-cover"></video>
   </polaroid>
   
-  <select v-model="selectedDevice" @change="changeCamera" class="mt-2 p-2 rounded">
+  <select v-model="selectedDevice" @change="changeCamera" class="mt-2 p-2 rounded text-white">
     <option v-for="device in videoDevices" :key="device.deviceId" :value="device.deviceId">
       {{ device.label || `Camera ${videoDevices.indexOf(device) + 1}` }}
     </option>

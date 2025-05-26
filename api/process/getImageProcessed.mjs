@@ -45,32 +45,3 @@ export default async (request, context) => {
     })
   }
 }
-
-
-
-
-const processImage = async (url) => {
-  try {
-    config.value.isLoading = true;
-    if (!config.value.currentImage || !config.value.doc) {
-      console.error('No image or document available for processing');
-      config.value.isLoading = false;
-      return false
-    }
-      
-
-    
-    await updateDoc(doc(db, 'items', config.value.doc.docId), {
-      process_result: result,
-    });
-    
-    config.value.isLoading = false;
-
-    return result;
-  } catch (error) {
-    console.error('Error processing image', error);
-    config.value.isLoading = false;
-    return false;
-  }
-
-}

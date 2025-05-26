@@ -9,7 +9,7 @@ import Header from './Header.vue';
     
   </polaroid>
   <div class="flex space-x-4">
-    <router-link to="/cam" class="px-6 py-3 bg-white text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors">
+    <router-link to="/cam" class="btn-primary">
       Accendiamo la camera!
     </router-link>
   </div>
