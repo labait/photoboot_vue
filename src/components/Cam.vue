@@ -68,7 +68,7 @@ async function changeCamera() {
 }
 
 async function shotPrepare() {
-  countDown.value = 3;
+  countDown.value = config.value.debug ? 1 : config.value.countDownSeconds;
   const showCount = () => {
     console.log(countDown.value);
   }
@@ -89,7 +89,7 @@ async function shotPrepare() {
 
 
 async function shot() {
-  sound1.play();
+  if(!config.value.debug) sound1.play();
   //return; // debug
   if (!video.value) return;
 
@@ -129,7 +129,7 @@ async function shot() {
       // go to detail page
       config.value.isUploading = false
       config.value.isLoading = false
-      router.push(`/detail/${config.value.doc.id}`);
+      router.push(`/detail/${config.value.docId}`);
     } else {
       console.error('Error processing image');
     }

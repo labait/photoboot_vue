@@ -28,11 +28,12 @@ export default async (request, context) => {
         },
         body: JSON.stringify({
           input:{
-            "prompt": process.env.VITE_PROMPT,
-            "aspect_ratio": "1:1",
-            "image_reference_url": imageUrl,
-            "image_reference_weight": 1,
-            "style_reference_weight": 0.85
+            aspect_ratio: "16:9",
+            //character_reference_url: "https://firebasestorage.googleapis.com/v0/b/photobooth-laba-2ca9f.firebasestorage.app/o/images%2F1748260640567%2F1748260640567.png?alt=media&token=7d30873f-0037-4d44-bb43-98953e6120da",
+            character_reference_url: imageUrl,
+            image_reference_weight: 0.55,
+            prompt: "photo of a 6-year-old child, ensuring that their recognizable features remain intact while making them appear younger Maintain the ambiance and objects in the image as closely as possible to the original reference image. no beard or goatee, no white hair.",
+            style_reference_weight: 0.85
           }
         })
       }
@@ -55,29 +56,3 @@ export default async (request, context) => {
 
 
 
-
-const processImage = async (url) => {
-  try {
-    config.value.isLoading = true;
-    if (!config.value.currentImage || !config.value.doc) {
-      console.error('No image or document available for processing');
-      config.value.isLoading = false;
-      return false
-    }
-      
-
-    
-    await updateDoc(doc(db, 'items', config.value.doc.docId), {
-      process_result: result,
-    });
-    
-    config.value.isLoading = false;
-
-    return result;
-  } catch (error) {
-    console.error('Error processing image', error);
-    config.value.isLoading = false;
-    return false;
-  }
-
-}

@@ -11,16 +11,15 @@ import { db } from '../firebase'
 
 const route = useRoute()
 const docId = ref(route.params.docId)
-const data = ref(null)
 
+const config = inject('config')
 const getResult = inject('getResult')
 
 const loadData = async () => {
   //config.value.isLoading = true
   const docRef = doc(db, 'items', docId.value)
-  const docData = await getDoc(docRef)
-  data.value = docData.data()
-  console.log(data.value)
+  config.value.docData = (await getDoc(docRef)).data()
+  console.log(config.value.docData)
   await getResult(docId.value)
 
   const original = document.querySelector('.original')
@@ -31,8 +30,6 @@ const loadData = async () => {
 }
 
 
-const config = inject('config')
-
 onMounted(async () => {
   await loadData()
 })
@@ -42,13 +39,13 @@ onMounted(async () => {
 <template>
   
   <div>
-    <Header :title="docId" />
-    <div v-if="data" class="polaroids">
+    <Header :title="config.docData?.image_id" />
+    <div v-if="config.docData" class="polaroids">
         <Polaroid class="original mb-8">
-          <img :src="data.image_source" class="w-full h-full object-cover block" />
+          <img :src="config.docData.image_source" class="w-full h-full object-cover block" />
         </Polaroid>
         <Polaroid class="processed mb-8">
-          <img v-if="data.image_processed" :src="data.image_processed" class="w-full h-full object-cover block" />
+          <img v-if="config.docData.image_processed" :src="config.docData.image_processed" class="w-full h-full object-cover block" />
           <div v-else class="processing absolute p-10 top-0 left-0 w-full h-full flex flex-col items-center justify-center  text-white ">
             <p class="text-center font-bold text-xl">
               Elaborazione in corso
@@ -57,7 +54,7 @@ onMounted(async () => {
           </div>
         </Polaroid>
     </div>
-    <Debug :data="data" v-if="config.debug" />
+    <Debug :data="config.docData" v-if="config.debug" />
   </div>
 </template>
 

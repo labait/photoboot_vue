@@ -5,14 +5,16 @@ import { storage, db } from './firebase'
 import { ref as storageRef, uploadString, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { collection, addDoc, serverTimestamp, updateDoc, doc, getDoc } from 'firebase/firestore'
 
+import Footer from './components/Footer.vue'
+
 import Loading from './components/Loading.vue'
 
 const config = ref({
+  countDownSeconds: 3,
   debug: false,
   isLoading: false,
   currentImage: null,
-  doc: null,
-  process_result: null,
+  docData: null,
 })
 window.config = config; // for debug purposes
 
@@ -26,7 +28,6 @@ const uploadImage = async (imageDataUrl, imageId) => {
       status: 'created',
     })
 
-
     const imageRef = storageRef(storage, `images/${imageId}/${imageId}.png`)
     await uploadString(imageRef, imageDataUrl, 'data_url')
     config.value.currentImage = imageDataUrl;
@@ -35,14 +36,16 @@ const uploadImage = async (imageDataUrl, imageId) => {
       image_source: downloadURL,
     })
     
-    config.value.doc = docRef;
+    const docData = (await getDoc(docRef)).data();
+    config.value.docData = docData;
+    config.value.docId = docRef.id;
+    console.log('docData',config.value)
 
     // call process function
-    const processUrl = `/.netlify/functions/processImage?docId=${config.value.doc.id}`;
+    const processUrl = `/.netlify/functions/processImage?docId=${docRef.id}`;
     console.log('processUrl', processUrl);
     const response = await fetch(processUrl);
     const result = await response.json()
-    config.value.process_result = result;
 
     // update the status to processing
     await updateDoc(docRef, {
@@ -78,7 +81,7 @@ const getResult = async (docId) => {
 
   if (data.status == "succeeded") {    
     // download image_processed and save to firebase storage
-    const imageRef = storageRef(storage, `images/${docId}/processed.png`)
+    const imageRef = storageRef(storage, `images/${data.imageId}/${data.imageId}-processed.png`)
     const response = await fetch(data.output);
     const blob = await response.blob();
     await uploadBytes(imageRef, blob);
@@ -89,6 +92,12 @@ const getResult = async (docId) => {
       process_result: data,
       image_processed: image_processed,
     })
+
+    const docData = (await getDoc(docRef)).data();
+    config.value.docData = docData;
+    console.log('docData', docData)
+
+    
   } else {
     if (checkCount < maxChecks) {
       setTimeout(() => {
@@ -116,5 +125,6 @@ provide('getResult', getResult);
   <div class="flex flex-col items-center justify-center min-h-screen bg-black">
     <Loading v-if="config.isLoading" />
     <router-view />
+    <Footer />
   </div>
 </template>

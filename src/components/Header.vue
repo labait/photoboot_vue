@@ -5,7 +5,7 @@ defineProps({
     title: {
         type: String,
         required: true,
-        default: 'Benvenut*'
+        default: ''
     }
 })
 </script>
