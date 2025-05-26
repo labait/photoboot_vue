@@ -8,7 +8,7 @@ import { collection, addDoc, serverTimestamp, updateDoc, doc, getDoc } from 'fir
 import Loading from './components/Loading.vue'
 
 const config = ref({
-  debug: true,
+  debug: false,
   isLoading: false,
   currentImage: null,
   doc: null,
@@ -101,8 +101,6 @@ const getResult = async (docId) => {
       })
     }
   }
-
-  
  
   return data;
 }

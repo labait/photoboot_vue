@@ -26,7 +26,7 @@ import { ref,defineProps } from 'vue';
         margin: var(--polaroid-padding);
         width: calc(var(--polaroid-width) - var(--polaroid-padding) * 2);
         height: calc(var(--polaroid-height) - var(--polaroid-padding) * 4);
-        background-color: red;
+        background-color: #999;
         overflow: hidden;
         position: relative;
     }   
