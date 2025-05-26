@@ -16,6 +16,10 @@ const isUploading = ref(false);
 
 const uploadImage = inject('uploadImage');
 
+const sound1 = new Audio('/click.mp3');
+const countDown = ref(0);
+
+
 onMounted(async () => {
   await getVideoDevices();
   if (videoDevices.value.length > 0) {
@@ -63,7 +67,30 @@ async function changeCamera() {
   await startCamera();
 }
 
+async function shotPrepare() {
+  countDown.value = 3;
+  const showCount = () => {
+    console.log(countDown.value);
+  }
+  showCount();
+  const interval = setInterval(() => {
+    countDown.value--;
+    showCount();
+    if (countDown.value == 0) {
+      clearInterval(interval);
+      document.querySelector('.shotOverlay').style.opacity = '1';
+      setTimeout(() => {
+        document.querySelector('.shotOverlay').style.opacity = '0';
+      }, 300);
+      shot();
+    }
+  }, 1000);
+}
+
+
 async function shot() {
+  sound1.play();
+  //return; // debug
   if (!video.value) return;
 
   const imageId = `${new Date().getTime()}`
@@ -118,6 +145,13 @@ async function shot() {
 </script>
 
 <template>
+  <div class="shotOverlay absolute top-0 left-0 w-full h-full z-2 bg-white"></div>
+  <div 
+  v-if="countDown > 0"
+  class="countdown flex justify-center items-center absolute top-0 left-0 w-full h-full opacity-70 text-white text-4xl font-bold z-2">
+    {{ countDown }}
+  </div>
+
   <Header title="Mettiti in posa" />
   <polaroid class="mb-8">
     <video ref="video" class="cam object-cover"></video>
@@ -129,7 +163,7 @@ async function shot() {
     </option>
   </select>
 
-  <button class="btn-primary mt-4" @click="shot" :disabled="isUploading">
+  <button class="btn-primary mt-4" @click="shotPrepare" :disabled="isUploading">
     {{ isUploading ? 'Caricamento...' : 'Scatta' }}
   </button>
 </template>
@@ -141,5 +175,13 @@ async function shot() {
     height: 100%;
     object-fit: cover;
     transform: scaleX(-1); /* Mirror the webcam image horizontally */
+}
+.countdown {
+  font-size: 20vw;
+}
+.shotOverlay {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none;
 }
 </style>
