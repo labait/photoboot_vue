@@ -13,17 +13,21 @@ const route = useRoute()
 const docId = ref(route.params.docId)
 const data = ref(null)
 
+const getResult = inject('getResult')
 
 const loadData = async () => {
   const docRef = doc(db, 'items', docId.value)
   const docData = await getDoc(docRef)
   data.value = docData.data()
+  console.log(data.value)
+  await getResult(docId.value)
 }
+
 
 const config = inject('config')
 
-onMounted(() => {
-  loadData()
+onMounted(async () => {
+  await loadData()
 })
 
 </script>
@@ -40,6 +44,7 @@ onMounted(() => {
     <Debug :data="data" v-if="config.debug" />
   </div>
 </template>
+
 
 <style scoped>
 

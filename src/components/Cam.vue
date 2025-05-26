@@ -14,7 +14,7 @@ const videoDevices = ref([]);
 const selectedDevice = ref('');
 const isUploading = ref(false);
 
-const saveImage = inject('saveImage');
+const uploadImage = inject('uploadImage');
 
 onMounted(async () => {
   await getVideoDevices();
@@ -93,7 +93,7 @@ async function shot() {
   try {
     isUploading.value = true;
     const filename = `photo-${new Date().getTime()}.png`
-    const result = await saveImage(image.value, filename);
+    const result = await uploadImage(image.value, filename);
     if (result) {
       console.log('Image processed successfully with result:', result);
       // go to detail page

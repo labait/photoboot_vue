@@ -3,7 +3,7 @@ import { ref, provide } from 'vue';
 
 import { storage, db } from './firebase'
 import { ref as storageRef, uploadString, getDownloadURL } from 'firebase/storage'
-import { collection, addDoc, serverTimestamp, updateDoc, doc } from 'firebase/firestore'
+import { collection, addDoc, serverTimestamp, updateDoc, doc, getDoc } from 'firebase/firestore'
 import axios from 'axios'
 
 import Loading from './components/Loading.vue'
@@ -17,7 +17,7 @@ const config = ref({
 })
 window.config = config; // for debug purposes
 
-const saveImage = async (imageDataUrl, filename) => {
+const uploadImage = async (imageDataUrl, filename) => {
   try {
     config.value.isLoading = true;
     const imageRef = storageRef(storage, `images/${filename}`)
@@ -36,18 +36,24 @@ const saveImage = async (imageDataUrl, filename) => {
       image_source: downloadURL,
       timestamp: serverTimestamp(),
       filename: filename,
+      status: 'created',
     })
     config.value.doc = docRef;
 
-    
+
     // call process function
-    const processUrl = `/.netlify/functions/process?docId=${config.value.doc.id}`;
+    const processUrl = `/.netlify/functions/processImage?docId=${config.value.doc.id}`;
     console.log('processUrl', processUrl);
     const response = await fetch(processUrl);
     const result = await response.json()
     config.value.process_result = result;
 
-    return config.value;
+    // update the status to processing
+    await updateDoc(docRef, {
+      status: 'processing',
+    })
+
+    return true;
 
   } catch (error) {
     console.error('Error uploading image:', error)
@@ -56,8 +62,25 @@ const saveImage = async (imageDataUrl, filename) => {
 }
 
 
+const getResult = async (docId) => {
+  const docRef = doc(db, 'items', docId)
+  const docData = await getDoc(docRef)
+  
+  // call process function
+  const getImageProcessedUrl = `/.netlify/functions/getImageProcessed?docId=${docId}`;
+  console.log('getImageProcessedUrl', getImageProcessedUrl);
+  const response = await fetch(getImageProcessedUrl);
+
+  setTimeout(() => {
+    getResult(docId)
+  }, 500000)
+  return docData.data()
+}
+
+
 provide('config', config);
-provide('saveImage', saveImage);
+provide('uploadImage', uploadImage);
+provide('getResult', getResult);
 
 </script>
 
