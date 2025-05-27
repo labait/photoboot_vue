@@ -35,7 +35,8 @@ const getRandomItem = () => {
 
 const setupPolaroids = () => {
     document.querySelectorAll('.polaroid').forEach((polaroid, index) => {
-        const randomRotation = Math.random() * 20 - 10
+        const maxRotation = 30
+        const randomRotation = -maxRotation + Math.random() * maxRotation
         const safePadding = 200
         const stageWidth = window.innerWidth - safePadding  
         const stageHeight = window.innerHeight - safePadding
@@ -106,10 +107,7 @@ body {
     position: absolute;
     transition: transform 0.3s ease;
     cursor: pointer;
-    &:hover {
-        transform: scale(1.1);
-        z-index: 10;
-    }
+    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.6);
 }
 
 .image-processed {

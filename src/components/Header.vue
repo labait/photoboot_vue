@@ -4,7 +4,7 @@ import { ref } from 'vue';
 defineProps({
     title: {
         type: String,
-        required: true,
+        required: false,
         default: ''
     }
 })
