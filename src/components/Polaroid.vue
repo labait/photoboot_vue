@@ -14,9 +14,9 @@ defineProps({
 <template>
     <div class="polaroid">
        <div class="polaroid-inner">
-            <RouterLink v-if="url" :to="url" class="qrcode block">
+            <a v-if="url" :href="url" class="qrcode block">
                 <qrcode-vue :value="url" :size="100" level="H" />
-            </RouterLink>
+            </a>
             <slot /> 
        </div>
     </div>
