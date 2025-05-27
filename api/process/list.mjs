@@ -9,7 +9,7 @@ export default async (request, context) => {
     const docRef = collection(db, 'items')
     const q = query(docRef, where('status', '==', 'processed'))
     const docData = await getDocs(q)
-    const data = docData.docs.map(doc => doc.data())
+    const data = docData.docs.map(doc => ({...doc.data(), docId: doc.id}))
     
     return new Response(JSON.stringify(data))
   } catch (error) {
