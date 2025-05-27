@@ -103,7 +103,7 @@ const clickPolaroid = (item) => {
     <div class="flex items-center justify-center polaroids">
         <Polaroid v-for="item in items" :key="item.docId" :id="`item-${item.docId}`" class="polaroid" @click="clickPolaroid(item)">
             <div class="qrcode">
-                <qrcode-vue :value="detailUrl(item)" :size="80" level="H" />
+                <qrcode-vue :value="detailUrl(item)" :size="100" level="H" />
             </div>
             <img :src="item.image_source" class="absolute top-0 left-0 w-full h-full object-cover block image-source" />
             <img :src="item.image_processed" class="absolute top-0 left-0 w-full h-full object-cover block image-processed" />
