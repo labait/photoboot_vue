@@ -3,6 +3,10 @@ import { ref, onMounted } from 'vue'
 import Header from './Header.vue'
 import Polaroid from './Polaroid.vue'
 
+const maxItems = 50
+const maxRotation = 30
+const safePadding = 200
+const nextInterval = 20000
 const items = ref([])
 let nextTimeout;
 let currentItem;
@@ -17,7 +21,7 @@ onMounted(async () => {
         const j = Math.floor(Math.random() * (i + 1));
         [data[i], data[j]] = [data[j], data[i]]
     }
-    items.value = data
+    items.value = data.slice(0, maxItems)
     
     // setup the polaroids
     setTimeout(() => {
@@ -35,9 +39,7 @@ const getRandomItem = () => {
 
 const setupPolaroids = () => {
     document.querySelectorAll('.polaroid').forEach((polaroid, index) => {
-        const maxRotation = 30
         const randomRotation = -maxRotation + Math.random() * maxRotation
-        const safePadding = 200
         const stageWidth = window.innerWidth - safePadding  
         const stageHeight = window.innerHeight - safePadding
         const randomLeft = -stageWidth/2 + stageWidth * Math.random() 
@@ -55,10 +57,7 @@ const showPolaroid = (docId) => {
     currentItem = items.value.find(item => item.docId === docId)
     currentPolaroid = document.getElementById(`item-${docId}`)
     if(!currentPolaroid || currentPolaroid === previousPolaroid) return
-    if(previousPolaroid) {
-        previousPolaroid.style.transform = previousPolaroid.style.transform_previous
-        previousPolaroid.style.zIndex = previousPolaroid.style.zIndex_previous
-    }
+    hidePreviousPolaroid()
     currentPolaroid.style.transform = `translate(0, 0) rotate(0deg) scale(1.5)`
     currentPolaroid.style.zIndex = 2000
     previousPolaroid = currentPolaroid
@@ -66,14 +65,24 @@ const showPolaroid = (docId) => {
     nextTimeout = setTimeout(() => {
         const item = getRandomItem()
         showPolaroid(item.docId)
-    }, 6000)
+    }, nextInterval)
     return
+}
+
+const hidePreviousPolaroid = () => {
+    if(previousPolaroid) {
+        previousPolaroid.style.transform = previousPolaroid.style.transform_previous
+        previousPolaroid.style.zIndex = previousPolaroid.style.zIndex_previous 
+    }
 }
 
 const clickPolaroid = (item) => {
     if(item !== currentItem) {
         currentItem = item
         showPolaroid(item.docId)
+    } else {
+        previousPolaroid = document.getElementById(`item-${item.docId}`)
+        hidePreviousPolaroid()
     }
 }
 
@@ -81,7 +90,7 @@ const clickPolaroid = (item) => {
 
 
 <template>
-    <Header />
+    <Header class="header" />
     <div class="flex items-center justify-center">
         <Polaroid v-for="item in items" :key="item.docId" :id="`item-${item.docId}`" class="polaroid" @click="clickPolaroid(item)">
             <img :src="item.image_source" class="absolute top-0 left-0 w-full h-full object-cover block image-source" />
@@ -94,7 +103,7 @@ const clickPolaroid = (item) => {
 body {
     overflow: hidden;
 }
-.main-header {
+.header {
     position: fixed;
     top: 0;
     z-index: 3000;

@@ -74,13 +74,6 @@ onMounted(async () => {
 
 
 @media (min-width: 768px) {
-  .main-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 10;
-  }
 
   .polaroids {
     margin-top: 200px;

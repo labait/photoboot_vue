@@ -122,9 +122,18 @@ provide('getResult', getResult);
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center min-h-screen bg-black">
+  <main class="flex flex-col items-center justify-center min-h-screen">
     <Loading v-if="config.isLoading" />
     <router-view />
     <Footer />
-  </div>
+  </main>
 </template>
+
+<style scoped>
+main {
+  background-image: url('/images/animazione_backdrop.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+</style>
