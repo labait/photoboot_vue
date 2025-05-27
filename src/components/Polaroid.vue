@@ -1,11 +1,22 @@
 <script setup>
-import { ref,defineProps } from 'vue';
+import { ref, inject, defineProps } from 'vue';
+import QrcodeVue, { QrcodeCanvas, QrcodeSvg } from 'qrcode.vue'
+import { RouterLink } from 'vue-router';
+
+defineProps({
+    url: { 
+        type: String,
+    }
+})
 
 </script>
 
 <template>
     <div class="polaroid">
        <div class="polaroid-inner">
+            <RouterLink v-if="url" :to="url" class="qrcode block">
+                <qrcode-vue :value="url" :size="100" level="H" />
+            </RouterLink>
             <slot /> 
        </div>
     </div>
@@ -30,5 +41,16 @@ import { ref,defineProps } from 'vue';
         overflow: hidden;
         position: relative;
     }   
+    .qrcode {
+        position: absolute;
+        bottom: -5px;
+        right: -5px;
+        transition: opacity 0.3s ease;
+        z-index: 1000;
+        border: 5px solid white;
+        &:hover {
+            opacity: 0.8;
+        }
+    }
 }
 </style>

@@ -15,3 +15,12 @@
     }
 }
 
+
+@media print {
+    body {
+        background-color:black;
+    }
+    .btn-primary {
+        display: none;
+    }
+}

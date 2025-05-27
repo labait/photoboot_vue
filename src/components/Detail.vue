@@ -14,6 +14,7 @@ const docId = ref(route.params.docId)
 
 const config = inject('config')
 const getResult = inject('getResult')
+const detailUrl = inject('detailUrl')
 
 const loadData = async () => {
   //config.value.isLoading = true
@@ -34,17 +35,24 @@ onMounted(async () => {
   await loadData()
 })
 
+const print = () => {
+  window.print()
+}
+
 </script>
 
 <template>
   
   <div>
     <Header :title="config.docData?.image_id" />
+    
+    <button class="btn-primary fixed bottom-0 right-0 m-10 z-1000" @click="print">Stampa</button>
+
     <div v-if="config.docData" class="polaroids">
         <Polaroid class="original mb-8">
           <img :src="config.docData.image_source" class="w-full h-full object-cover block" />
         </Polaroid>
-        <Polaroid class="processed mb-8">
+        <Polaroid :url="detailUrl(docId)" class="processed mb-8">
           <img v-if="config.docData.image_processed" :src="config.docData.image_processed" class="w-full h-full object-cover block" />
           <div v-else class="processing absolute p-10 top-0 left-0 w-full h-full flex flex-col items-center justify-center  text-white ">
             <p class="text-center font-bold text-xl">
@@ -84,7 +92,7 @@ onMounted(async () => {
     }
 
     .processed {
-      transform: translateX(-20%) scale(1.5) rotate(5deg);
+      transform: translateX(-40%) scale(1.5) rotate(5deg);
     }
   } 
 }

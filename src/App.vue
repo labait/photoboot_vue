@@ -114,8 +114,8 @@ const getResult = async (docId) => {
   return data;
 }
 
-const detailUrl = (item) => {
-    return `${window.location.origin}/detail/${item.docId}`
+const detailUrl = (docId) => {
+    return `${window.location.origin}/detail/${docId}`
 }
 
 

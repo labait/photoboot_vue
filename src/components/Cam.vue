@@ -177,7 +177,7 @@ async function shot() {
     transform: scaleX(-1); /* Mirror the webcam image horizontally */
 }
 .countdown {
-  font-size: 20vw;
+  font-size: 50vw;
 }
 .shotOverlay {
   opacity: 0;

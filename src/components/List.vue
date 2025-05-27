@@ -2,7 +2,6 @@
 import { ref, onMounted, inject } from 'vue'
 import Header from './Header.vue'
 import Polaroid from './Polaroid.vue'
-import QrcodeVue, { QrcodeCanvas, QrcodeSvg } from 'qrcode.vue'
 
 const detailUrl = inject('detailUrl')
 const config = inject('config')
@@ -101,10 +100,7 @@ const clickPolaroid = (item) => {
 <template>
     <Header class="header" />
     <div class="flex items-center justify-center polaroids">
-        <Polaroid v-for="item in items" :key="item.docId" :id="`item-${item.docId}`" class="polaroid" @click="clickPolaroid(item)">
-            <div class="qrcode">
-                <qrcode-vue :value="detailUrl(item)" :size="100" level="H" />
-            </div>
+        <Polaroid v-for="item in items" :url="detailUrl(item.docId)" :key="item.docId" :id="`item-${item.docId}`" class="polaroid" @click="clickPolaroid(item)">
             <img :src="item.image_source" class="absolute top-0 left-0 w-full h-full object-cover block image-source" />
             <img :src="item.image_processed" class="absolute top-0 left-0 w-full h-full object-cover block image-processed" />
         </Polaroid>
@@ -120,6 +116,17 @@ body {
     top: 0;
     z-index: 3000;
 }
+
+.polaroid {
+    .qrcode {
+        opacity: 0;
+    }
+    &.active {
+        .qrcode {
+            opacity: 1;
+        }
+    }
+}
 </style>
 
 <style scoped>
@@ -129,20 +136,6 @@ body {
     transition: transform 0.3s ease;
     cursor: pointer;
     box-shadow: 0 20px 20px rgba(0, 0, 0, 0.6);
-    .qrcode {
-        position: absolute;
-        bottom: -5px;
-        right: -5px;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: 1000;
-        border: 5px solid white;
-    }
-    &.active {
-        .qrcode {
-            opacity: 1;
-        }
-    }
 }
 
 .image-processed {
