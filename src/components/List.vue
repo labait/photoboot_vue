@@ -5,6 +5,7 @@ import Polaroid from './Polaroid.vue'
 import QrcodeVue, { QrcodeCanvas, QrcodeSvg } from 'qrcode.vue'
 
 const detailUrl = inject('detailUrl')
+const config = inject('config')
 
 const maxItems = 50
 const maxRotation = 30
@@ -17,6 +18,7 @@ let currentPolaroid;
 let previousPolaroid;
 
 onMounted(async () => {
+    config.value.isLoading = true
     const response = await fetch('/.netlify/functions/list')
     const data = await response.json()
     // Shuffle the array using Fisher-Yates algorithm
@@ -25,6 +27,7 @@ onMounted(async () => {
         [data[i], data[j]] = [data[j], data[i]]
     }
     items.value = data.slice(0, maxItems)
+    config.value.isLoading = false
     
     // setup the polaroids
     setTimeout(() => {
