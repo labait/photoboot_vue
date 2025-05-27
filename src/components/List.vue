@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
+import Header from './Header.vue'
 import Polaroid from './Polaroid.vue'
 
 const items = ref([])
@@ -23,7 +24,7 @@ onMounted(async () => {
             const stageHeight = window.innerHeight - safePadding
             const randomLeft = -stageWidth/2 + stageWidth * Math.random() 
             const randomTop = -stageHeight/2 + stageHeight * Math.random()
-            const transform = `translate(${randomLeft}px, ${randomTop}px) rotate(${randomRotation}deg)`
+            const transform = `translate(${randomLeft}px, ${randomTop}px) rotate(${randomRotation}deg) scale(0.5)`
             polaroid.style.zIndex = polaroid.style.zIndex_previous = 1000+index;
             polaroid.style.transform = transform
             polaroid.style.transform_previous = transform
@@ -51,6 +52,7 @@ onMounted(async () => {
 
 
 <template>
+    <Header />
     <div class="flex items-center justify-center">
         <Polaroid v-for="item in items" :key="item.docId" :id="`item-${item.docId}`" class="polaroid" >
             <img :src="item.image_source" class="w-full h-full object-cover block" />
@@ -63,9 +65,15 @@ onMounted(async () => {
 body {
     overflow: hidden;
 }
+.main-header {
+    position: fixed;
+    top: 0;
+    z-index: 3000;
+}
 </style>
 
 <style scoped>
+
 .polaroid {
     position: absolute;
     transition: transform 0.3s ease;
