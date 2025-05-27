@@ -43,7 +43,7 @@ onMounted(async () => {
             currentPolaroid.style.transform = `translate(0, 0) rotate(0deg) scale(1.5)`
             currentPolaroid.style.zIndex = 2000
             previousPolaroid = currentPolaroid
-        }, 3000)
+        }, 6000)
     }, 0)
     
 })
@@ -55,8 +55,8 @@ onMounted(async () => {
     <Header />
     <div class="flex items-center justify-center">
         <Polaroid v-for="item in items" :key="item.docId" :id="`item-${item.docId}`" class="polaroid" >
-            <img :src="item.image_source" class="w-full h-full object-cover block" />
-            <img :src="item.image_processed" class="w-full h-full object-cover block" />
+            <img :src="item.image_source" class="absolute top-0 left-0 w-full h-full object-cover block image-source" />
+            <img :src="item.image_processed" class="absolute top-0 left-0 w-full h-full object-cover block image-processed" />
         </Polaroid>
     </div>
 </template>
@@ -81,6 +81,23 @@ body {
     &:hover {
         transform: scale(1.1);
         z-index: 10;
+    }
+}
+
+.image-processed {
+    animation: anim_processed 3s ease infinite;
+}
+
+
+@keyframes anim_processed {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
 </style>
