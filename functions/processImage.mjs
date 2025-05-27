@@ -1,7 +1,7 @@
 // Docs on request and context https://docs.netlify.com/functions/build/#code-your-function-2
 
 import { getDoc, updateDoc, doc } from 'firebase/firestore'
-import { db } from '../../src/firebase'
+import { db } from '../src/firebase'
 
 
 export default async (request, context) => {
