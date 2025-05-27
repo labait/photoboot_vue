@@ -4,6 +4,10 @@ import Header from './Header.vue'
 import Polaroid from './Polaroid.vue'
 
 const items = ref([])
+let nextTimeout;
+let currentItem;
+let currentPolaroid;
+let previousPolaroid;
 
 onMounted(async () => {
     const response = await fetch('/.netlify/functions/list')
@@ -17,36 +21,60 @@ onMounted(async () => {
     
     // setup the polaroids
     setTimeout(() => {
-        document.querySelectorAll('.polaroid').forEach((polaroid, index) => {
-            const randomRotation = Math.random() * 20 - 10
-            const safePadding = 200
-            const stageWidth = window.innerWidth - safePadding  
-            const stageHeight = window.innerHeight - safePadding
-            const randomLeft = -stageWidth/2 + stageWidth * Math.random() 
-            const randomTop = -stageHeight/2 + stageHeight * Math.random()
-            const transform = `translate(${randomLeft}px, ${randomTop}px) rotate(${randomRotation}deg) scale(0.5)`
-            polaroid.style.zIndex = polaroid.style.zIndex_previous = 1000+index;
-            polaroid.style.transform = transform
-            polaroid.style.transform_previous = transform
-        })
-
-        let previousPolaroid = null
-        const loopInterval = setInterval(() => {
-            const randomIndex = Math.floor(Math.random() * items.value.length)
-            const currentItem = items.value[randomIndex]
-            const currentPolaroid = document.getElementById(`item-${currentItem.docId}`)
-            if(!currentPolaroid || currentPolaroid === previousPolaroid) return
-            if(previousPolaroid) {
-                previousPolaroid.style.transform = previousPolaroid.style.transform_previous
-                previousPolaroid.style.zIndex = previousPolaroid.style.zIndex_previous
-            }
-            currentPolaroid.style.transform = `translate(0, 0) rotate(0deg) scale(1.5)`
-            currentPolaroid.style.zIndex = 2000
-            previousPolaroid = currentPolaroid
-        }, 6000)
+        setupPolaroids()
+        const item = getRandomItem()
+        showPolaroid(item.docId)
     }, 0)
     
 })
+
+const getRandomItem = () => {
+    const randomIndex = Math.floor(Math.random() * items.value.length)
+    return items.value[randomIndex]
+}
+
+const setupPolaroids = () => {
+    document.querySelectorAll('.polaroid').forEach((polaroid, index) => {
+        const randomRotation = Math.random() * 20 - 10
+        const safePadding = 200
+        const stageWidth = window.innerWidth - safePadding  
+        const stageHeight = window.innerHeight - safePadding
+        const randomLeft = -stageWidth/2 + stageWidth * Math.random() 
+        const randomTop = -stageHeight/2 + stageHeight * Math.random()
+        const transform = `translate(${randomLeft}px, ${randomTop}px) rotate(${randomRotation}deg) scale(0.5)`
+        polaroid.style.zIndex = polaroid.style.zIndex_previous = 1000+index;
+        polaroid.style.transform = transform
+        polaroid.style.transform_previous = transform
+    })
+}
+
+
+const showPolaroid = (docId) => {
+    console.log(docId)
+    currentItem = items.value.find(item => item.docId === docId)
+    currentPolaroid = document.getElementById(`item-${docId}`)
+    if(!currentPolaroid || currentPolaroid === previousPolaroid) return
+    if(previousPolaroid) {
+        previousPolaroid.style.transform = previousPolaroid.style.transform_previous
+        previousPolaroid.style.zIndex = previousPolaroid.style.zIndex_previous
+    }
+    currentPolaroid.style.transform = `translate(0, 0) rotate(0deg) scale(1.5)`
+    currentPolaroid.style.zIndex = 2000
+    previousPolaroid = currentPolaroid
+    clearTimeout(nextTimeout);
+    nextTimeout = setTimeout(() => {
+        const item = getRandomItem()
+        showPolaroid(item.docId)
+    }, 6000)
+    return
+}
+
+const clickPolaroid = (item) => {
+    if(item !== currentItem) {
+        currentItem = item
+        showPolaroid(item.docId)
+    }
+}
 
 </script>
 
@@ -54,7 +82,7 @@ onMounted(async () => {
 <template>
     <Header />
     <div class="flex items-center justify-center">
-        <Polaroid v-for="item in items" :key="item.docId" :id="`item-${item.docId}`" class="polaroid" >
+        <Polaroid v-for="item in items" :key="item.docId" :id="`item-${item.docId}`" class="polaroid" @click="clickPolaroid(item)">
             <img :src="item.image_source" class="absolute top-0 left-0 w-full h-full object-cover block image-source" />
             <img :src="item.image_processed" class="absolute top-0 left-0 w-full h-full object-cover block image-processed" />
         </Polaroid>
