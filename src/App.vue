@@ -114,10 +114,15 @@ const getResult = async (docId) => {
   return data;
 }
 
+const detailUrl = (item) => {
+    return `${window.location.origin}/detail/${item.docId}`
+}
+
 
 provide('config', config);
 provide('uploadImage', uploadImage);
 provide('getResult', getResult);
+provide('detailUrl', detailUrl);
 
 </script>
 

@@ -1,7 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, inject } from 'vue'
 import Header from './Header.vue'
 import Polaroid from './Polaroid.vue'
+import QrcodeVue, { QrcodeCanvas, QrcodeSvg } from 'qrcode.vue'
+
+const detailUrl = inject('detailUrl')
 
 const maxItems = 50
 const maxRotation = 30
@@ -52,6 +55,7 @@ const setupPolaroids = () => {
 }
 
 
+
 const showPolaroid = (docId) => {
     console.log(docId)
     currentItem = items.value.find(item => item.docId === docId)
@@ -60,6 +64,7 @@ const showPolaroid = (docId) => {
     hidePreviousPolaroid()
     currentPolaroid.style.transform = `translate(0, 0) rotate(0deg) scale(1.5)`
     currentPolaroid.style.zIndex = 2000
+    currentPolaroid.classList.add('active')
     previousPolaroid = currentPolaroid
     clearTimeout(nextTimeout);
     nextTimeout = setTimeout(() => {
@@ -71,6 +76,7 @@ const showPolaroid = (docId) => {
 
 const hidePreviousPolaroid = () => {
     if(previousPolaroid) {
+        previousPolaroid.classList.remove('active')
         previousPolaroid.style.transform = previousPolaroid.style.transform_previous
         previousPolaroid.style.zIndex = previousPolaroid.style.zIndex_previous 
     }
@@ -91,8 +97,11 @@ const clickPolaroid = (item) => {
 
 <template>
     <Header class="header" />
-    <div class="flex items-center justify-center">
+    <div class="flex items-center justify-center polaroids">
         <Polaroid v-for="item in items" :key="item.docId" :id="`item-${item.docId}`" class="polaroid" @click="clickPolaroid(item)">
+            <div class="qrcode">
+                <qrcode-vue :value="detailUrl(item)" :size="80" level="H" />
+            </div>
             <img :src="item.image_source" class="absolute top-0 left-0 w-full h-full object-cover block image-source" />
             <img :src="item.image_processed" class="absolute top-0 left-0 w-full h-full object-cover block image-processed" />
         </Polaroid>
@@ -117,6 +126,20 @@ body {
     transition: transform 0.3s ease;
     cursor: pointer;
     box-shadow: 0 20px 20px rgba(0, 0, 0, 0.6);
+    .qrcode {
+        position: absolute;
+        bottom: -5px;
+        right: -5px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1000;
+        border: 5px solid white;
+    }
+    &.active {
+        .qrcode {
+            opacity: 1;
+        }
+    }
 }
 
 .image-processed {
