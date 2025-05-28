@@ -164,4 +164,10 @@ body {
         opacity: 1;
     }
 }
+
+@media (max-width: 768px) {
+    .polaroids {
+        transform: scale(0.6);
+    }
+}
 </style>
