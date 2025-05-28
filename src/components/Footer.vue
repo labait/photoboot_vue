@@ -10,4 +10,10 @@
 
 <style scoped>
 
+.footer {
+    position: fixed;
+    bottom: 50px;
+    z-index: 3000;
+}
+
 </style>

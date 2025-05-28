@@ -5,6 +5,7 @@ import Polaroid from './Polaroid.vue'
 
 const detailUrl = inject('detailUrl')
 const config = inject('config')
+const getStorageUrl = inject('getStorageUrl')
 
 const maxItems = 50
 const maxRotation = 30
@@ -26,6 +27,15 @@ onMounted(async () => {
         [data[i], data[j]] = [data[j], data[i]]
     }
     items.value = data.slice(0, maxItems)
+    
+
+    items.value = await Promise.all(items.value.map(async item => {
+        return {
+            ...item,
+            image_source: await getStorageUrl(item.image_source),
+            image_processed: await getStorageUrl(item.image_processed)
+        }
+    }))
     config.value.isLoading = false
     
     // setup the polaroids
@@ -99,7 +109,7 @@ const clickPolaroid = (item) => {
 
 <template>
     <Header class="header" />
-    <div class="flex items-center justify-center polaroids">
+    <div v-if="!config.isLoading" class="flex items-center justify-center polaroids">
         
         <Polaroid v-for="item in items" :url="detailUrl(item.docId)" :key="item.docId" :id="`item-${item.docId}`" :data-image-id="item.image_id" class="polaroid" @click="clickPolaroid(item)">
             <img :src="item.image_source" class="absolute top-0 left-0 w-full h-full object-cover block image-source" />
@@ -111,11 +121,6 @@ const clickPolaroid = (item) => {
 <style>
 body {
     overflow: hidden;
-}
-.header {
-    position: fixed;
-    top: 0;
-    z-index: 3000;
 }
 
 .polaroid {
@@ -141,6 +146,10 @@ body {
 
 .image-processed {
     animation: anim_processed 3s ease infinite;
+}
+
+.image-source {
+    transform: scaleX(-1);
 }
 
 

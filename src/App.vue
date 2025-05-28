@@ -6,7 +6,6 @@ import { ref as storageRef, uploadString, uploadBytes, getDownloadURL } from 'fi
 import { collection, addDoc, serverTimestamp, updateDoc, doc, getDoc } from 'firebase/firestore'
 
 import Footer from './components/Footer.vue'
-
 import Loading from './components/Loading.vue'
 
 const config = ref({
@@ -17,6 +16,15 @@ const config = ref({
   docData: null,
 })
 window.config = config; // for debug purposes
+
+
+const getStorageUrl = async (str) => {
+  const url = str.split('\/o\/')[1].split("?")[0].replaceAll("%2F", "/")
+  const imageRef = storageRef(storage, url)
+  const storageUrl = await getDownloadURL(imageRef)
+  console.log(storageUrl)
+  return storageUrl
+}
 
 const uploadImage = async (imageDataUrl, imageId) => {
   try {
@@ -107,6 +115,7 @@ provide('config', config);
 provide('uploadImage', uploadImage);
 provide('getResult', getResult);
 provide('detailUrl', detailUrl);
+provide('getStorageUrl', getStorageUrl);
 
 </script>
 

@@ -15,6 +15,7 @@ const docId = ref(route.params.docId)
 const config = inject('config')
 const getResult = inject('getResult')
 const detailUrl = inject('detailUrl')
+const getStorageUrl = inject('getStorageUrl')
 
 const loadData = async () => {
   //config.value.isLoading = true
@@ -27,6 +28,10 @@ const loadData = async () => {
   const processed = document.querySelector('.processed')
   // original.style.display = 'block'
   // processed.style.display = 'none'
+
+  config.value.docData.image_source = await getStorageUrl(config.value.docData.image_source)
+  config.value.docData.image_processed = await getStorageUrl(config.value.docData.image_processed)
+
   config.value.isLoading = false
 }
 
@@ -52,7 +57,7 @@ const print = () => {
         <Polaroid class="original mb-8">
           <img :src="config.docData.image_source" class="w-full h-full object-cover block" />
         </Polaroid>
-        <Polaroid :url="detailUrl(docId)" class="processed mb-8">
+        <Polaroid :url="detailUrl(docId)" class="processed mb-8 active">
           <img v-if="config.docData.image_processed" :src="config.docData.image_processed" class="w-full h-full object-cover block" />
           <div v-else class="processing absolute p-10 top-0 left-0 w-full h-full flex flex-col items-center justify-center  text-white ">
             <p class="text-center font-bold text-xl">
@@ -67,7 +72,17 @@ const print = () => {
 </template>
 
 
-<style scoped lang="scss">
+<style scoped>
+
+.polaroid {
+  .qrcode {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
 
 .polaroids {
   display: flex;
@@ -76,7 +91,7 @@ const print = () => {
   justify-content: center;
   
   .original, .processed {
-    //display: none;
+
   }
 }
 

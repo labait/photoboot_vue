@@ -27,8 +27,12 @@ export default async (request, context) => {
 
     console.log('processResult', docData.image_id)
     // download image_processed and save to firebase storage
-    if(processResult.status == "succeeded" && processResult.output) {
-      
+    if(
+      processResult.status == "succeeded" 
+      && processResult.output
+      && !docData.image_processed
+    ) {
+      console.log("save image_processed", docData.image_id)
       const imageRef = storageRef(storage, `images/${docData.image_id}/${docData.image_id}-processed.png`)
       const imageResponse = await fetch(processResult.output);
       const blob = await imageResponse.blob();
