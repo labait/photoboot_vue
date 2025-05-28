@@ -78,7 +78,7 @@ const getResult = async (docId) => {
     check_count: checkCount,
   })
 
-  if (data.docData.process_result.status == "succeeded") {    
+  if (data.process_result.status == "succeeded") {    
     config.value.docData = data;
     console.log('docData', data)
   } else {
