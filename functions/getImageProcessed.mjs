@@ -1,27 +1,18 @@
 // Docs on request and context https://docs.netlify.com/functions/build/#code-your-function-2
 
-import { getDoc, updateDoc, doc } from 'firebase/firestore'
-import { db } from '../src/firebase'
-
+import { storage,db } from '../src/firebase'
+import { ref as storageRef, uploadString, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { collection, addDoc, serverTimestamp, updateDoc, doc, getDoc } from 'firebase/firestore'
 
 export default async (request, context) => {
   try {
     const url = new URL(request.url)
     const docId = url.searchParams.get('docId')
     const docRef = doc(db, 'items', docId)
-    const docData = await getDoc(docRef)
-    const docDataJson = docData.data()
-    const imageUrl = docDataJson.image_source
-    
-    const data = {
-      docId: docData.id, 
-      docData: docDataJson,
-      result: null,
-    }
-
-    const resultUrl = docDataJson.process_result.urls.get
-    const response = await fetch(
-      resultUrl,
+    let docData = (await getDoc(docRef)).data();
+    const processUrl = docData.process_result.urls.get
+    const processResponse = await fetch(
+      processUrl,
       {
         method: 'GET',
         headers: {
@@ -29,16 +20,28 @@ export default async (request, context) => {
         }
       }
     );
+    const processResult = await processResponse.json();
+    await updateDoc(docRef, {
+      process_result: processResult,
+    })
 
-    const result = await response.json();
-    data.result = result;
+    console.log('processResult', docData.image_id)
+    // download image_processed and save to firebase storage
+    if(processResult.status == "succeeded" && processResult.output) {
+      
+      const imageRef = storageRef(storage, `images/${docData.image_id}/${docData.image_id}-processed.png`)
+      const imageResponse = await fetch(processResult.output);
+      const blob = await imageResponse.blob();
+      await uploadBytes(imageRef, blob);
+      const image_processed = await getDownloadURL(imageRef)
+      await updateDoc(docRef, {
+        status: 'processed',
+        image_processed: image_processed,
+      })
+      docData = (await getDoc(docRef)).data(); // update docData
+    }
 
-    // update doc with result
-    await updateDoc(doc(db, 'items', docId), {
-      status: 'processed',
-    });
-
-    return new Response(JSON.stringify(result))
+    return new Response(JSON.stringify(docData))
   } catch (error) {
     return new Response(error.toString(), {
       status: 500,

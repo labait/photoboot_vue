@@ -72,32 +72,15 @@ const getResult = async (docId) => {
   console.log(`getImageProcessedUrl ${docId}, checkCount ${checkCount}`, getImageProcessedUrl);
   const response = await fetch(getImageProcessedUrl);
   const data = await response.json()
-  console.log('data', data)
 
   checkCount = checkCount + 1;
   await updateDoc(docRef, {
     check_count: checkCount,
   })
 
-  if (data.status == "succeeded") {    
-    // download image_processed and save to firebase storage
-    const imageRef = storageRef(storage, `images/${data.imageId}/${data.imageId}-processed.png`)
-    const response = await fetch(data.output);
-    const blob = await response.blob();
-    await uploadBytes(imageRef, blob);
-    const image_processed = await getDownloadURL(imageRef)
-
-    await updateDoc(docRef, {
-      status: 'processed',
-      process_result: data,
-      image_processed: image_processed,
-    })
-
-    const docData = (await getDoc(docRef)).data();
-    config.value.docData = docData;
-    console.log('docData', docData)
-
-    
+  if (data.docData.process_result.status == "succeeded") {    
+    config.value.docData = data;
+    console.log('docData', data)
   } else {
     if (checkCount < maxChecks) {
       setTimeout(() => {
@@ -113,6 +96,7 @@ const getResult = async (docId) => {
  
   return data;
 }
+
 
 const detailUrl = (docId) => {
     return `${window.location.origin}/detail/${docId}`
