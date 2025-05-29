@@ -98,7 +98,7 @@ const print = () => {
 
 @media (max-width: 768px) {
   .polaroid {
-    transform: scale(0.7);
+    transform: scale(1.2);
   }
 }
 
