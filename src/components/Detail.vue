@@ -89,9 +89,12 @@ const print = () => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
-  .original, .processed {
+}
 
+
+@media (max-width: 768px) {
+  .polaroid {
+    transform: scale(0.7);
   }
 }
 

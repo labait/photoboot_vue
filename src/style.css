@@ -15,10 +15,10 @@
     }
 }
 
-
 @media print {
+    html,
     body {
-        background-color: white;
+        background-color: #000;
     }
     .btn-primary,
     .polaroid.original,
