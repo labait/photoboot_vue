@@ -50,8 +50,6 @@ const print = () => {
   
   <div>
     <Header :title="config.docData?.image_id" />
-    
-    <button class="btn-primary fixed bottom-0 right-0 m-10 z-1000" @click="print">Stampa</button>
 
     <div v-if="config.docData" class="polaroids">
         <Polaroid class="original mb-8">
@@ -66,6 +64,12 @@ const print = () => {
             fai refresh o attendi qualche secondo...
           </div>
         </Polaroid>
+    </div>
+
+    <div class="fixed flex justify-center bottom-0 right-0 left-0 m-10 z-10000 bg-black">
+      <div class="p-4">
+        <button class="btn-primary" @click="print">Stampa</button>
+      </div>
     </div>
     <Debug :data="config.docData" v-if="config.debug" />
   </div>
