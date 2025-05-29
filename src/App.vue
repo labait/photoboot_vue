@@ -120,7 +120,7 @@ provide('getStorageUrl', getStorageUrl);
 </script>
 
 <template>
-  <main class="flex flex-col items-center justify-start min-h-screen">
+  <main class="flex flex-col items-center justify-center min-h-screen">
     <Loading v-if="config.isLoading" />
     <router-view />
     <Footer />
