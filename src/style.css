@@ -18,9 +18,11 @@
 
 @media print {
     body {
-        background-color:black;
+        background-color: white;
     }
-    .btn-primary {
+    .btn-primary,
+    .polaroid.original,
+    h1 {
         display: none;
     }
 }
