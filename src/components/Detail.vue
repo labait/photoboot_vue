@@ -66,7 +66,7 @@ const print = () => {
         </Polaroid>
     </div>
 
-    <div class="fixed flex justify-center bottom-0 right-0 left-0 m-10 z-10000 bg-black">
+    <div class="btn-wrapper fixed flex justify-center bottom-0 right-0 left-0 m-10 z-10000 bg-black">
       <div class="p-4">
         <button class="btn-primary" @click="print">Stampa</button>
       </div>
