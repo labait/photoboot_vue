@@ -66,7 +66,7 @@ const print = () => {
         </Polaroid>
     </div>
 
-    <div class="btn-wrapper fixed flex justify-center bottom-0 right-0 left-0 m-10 z-10000 bg-black">
+    <div class="btn-wrapper fixed flex justify-end bottom-0 right-0 left-0 m-10 z-10000">
       <div class="p-4">
         <button class="btn-primary" @click="print">Stampa</button>
       </div>
@@ -96,15 +96,19 @@ const print = () => {
 }
 
 
-@media (max-width: 768px) {
+@media only print and (max-width: 768px) {
   .polaroid {
     transform: scale(1.2);
   }
 }
 
+@media only screen and (max-width: 768px) {
+  .polaroid {
+    transform: scale(.8);
+  }
+}
 
 @media (min-width: 768px) {
-
   .polaroids {
     margin-top: 200px;
     flex-direction: row;

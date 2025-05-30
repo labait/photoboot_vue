@@ -5,10 +5,10 @@ import Header from './Header.vue';
 
 <template>
   <Header title="Benvenut*" />
-  <polaroid class="mb-8">
+  <polaroid class="mb-8 relative z-20">
     <img src="../assets/gif_one.gif" class="w-full h-full object-cover block">
   </polaroid>
-  <div class="flex space-x-4">
+  <div class="flex space-x-4 relative z-20">
     <router-link to="/cam" class="btn-primary">
       Accendiamo la camera!
     </router-link>
