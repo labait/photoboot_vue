@@ -14,6 +14,10 @@ const config = ref({
   isLoading: false,
   currentImage: null,
   docData: null,
+  features: {
+    'list': true,
+    'camera': false,
+  },
 })
 window.config = config; // for debug purposes
 

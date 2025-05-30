@@ -26,6 +26,9 @@ onMounted(async () => {
     selectedDevice.value = videoDevices.value[0].deviceId;
     await startCamera();
   }
+  if(!config.value.features.camera) {
+    router.push('/');
+  }
 });
 
 async function getVideoDevices() {
