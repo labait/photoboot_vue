@@ -34,7 +34,7 @@ export default async (request, context) => {
     */
 
     /* flux-2-pro */
-    const apiUrl = 'https://api.replicate.com/v1/models/luma/photon/predictions'
+    const apiUrl = 'https://api.replicate.com/v1/models/black-forest-labs/flux-2-pro/predictions'
     const body = {
       input: {
         prompt: process.env.VITE_PROMPT,
