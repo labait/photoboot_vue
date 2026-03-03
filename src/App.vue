@@ -137,9 +137,6 @@ provide('getStorageUrl', getStorageUrl);
 
 <style scoped>
 main {
-  background-image: url('/images/animazione_backdrop.gif');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-color: #2b2b2b;
 }
 </style>
