@@ -21,6 +21,10 @@ onMounted(async () => {
     config.value.isLoading = true
     const response = await fetch('/.netlify/functions/list')
     const data = await response.json()
+    if(!data?.length) {
+        config.value.isLoading = false
+        return
+    }
     // Shuffle the array using Fisher-Yates algorithm
     for (let i = data.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));

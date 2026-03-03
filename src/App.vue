@@ -9,7 +9,7 @@ import Footer from './components/Footer.vue'
 import Loading from './components/Loading.vue'
 
 
-const edition = import.meta.env.VITE_EDITION ?? import.meta.env.EDITION
+const edition = import.meta.env.VITE_EDITION 
 
 const config = ref({
   countDownSeconds: 3,
@@ -19,7 +19,7 @@ const config = ref({
   docData: null,
   features: {
     'list': true,
-    'camera': false,
+    'camera': true,
   },
 })
 window.config = config; // for debug purposes
