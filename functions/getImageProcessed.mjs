@@ -16,7 +16,7 @@ export default async (request, context) => {
       {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${process.env.VITE_REPLICATE_API_TOKEN}`
+          'Authorization': `Bearer ${process.env.REPLICATE_API_TOKEN}`
         }
       }
     );

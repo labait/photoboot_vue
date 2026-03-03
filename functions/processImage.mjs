@@ -24,7 +24,7 @@ export default async (request, context) => {
       {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${process.env.VITE_REPLICATE_API_TOKEN}`
+          'Authorization': `Bearer ${process.env.REPLICATE_API_TOKEN}`
         },
         body: JSON.stringify({
           input:{
