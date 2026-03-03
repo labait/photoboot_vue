@@ -3,11 +3,22 @@
 import { getDoc, updateDoc, doc, collection, getDocs, query, where } from 'firebase/firestore'
 import { db } from '../src/firebase'
 
+const edition = process.env.VITE_EDITION
 
 export default async (request, context) => {
   try {
+    if (!edition) {
+      return new Response('Missing EDITION environment variable', {
+        status: 500,
+      })
+    }
+
     const docRef = collection(db, 'items')
-    const q = query(docRef, where('status', '==', 'processed'))
+    const q = query(
+      docRef,
+      where('status', '==', 'processed'),
+      where('edition', '==', edition)
+    )
     const docData = await getDocs(q)
     const data = docData.docs.map(doc => ({...doc.data(), docId: doc.id}))
     

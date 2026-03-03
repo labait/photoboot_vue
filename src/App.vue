@@ -8,6 +8,9 @@ import { collection, addDoc, serverTimestamp, updateDoc, doc, getDoc } from 'fir
 import Footer from './components/Footer.vue'
 import Loading from './components/Loading.vue'
 
+
+const edition = import.meta.env.VITE_EDITION ?? import.meta.env.EDITION
+
 const config = ref({
   countDownSeconds: 3,
   debug: false,
@@ -38,6 +41,7 @@ const uploadImage = async (imageDataUrl, imageId) => {
       timestamp: serverTimestamp(),
       image_id: imageId,
       status: 'created',
+      edition,
     })
 
     const imageRef = storageRef(storage, `images/${imageId}/${imageId}.png`)
