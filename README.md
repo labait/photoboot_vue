@@ -16,6 +16,7 @@ npm run # running w/out netlify for testing purposes
 
 ## set env vars
 copy `.env.sample` to `.env` and set keys
+a version is available in 1p here https://share.1password.com/s#GcYWm88k4NQKtz2vbq2BbHCnE0eGhnVnxOkNNOmS1rk
 
 ## hosting
 the app is serverv via netlify at 
