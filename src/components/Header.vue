@@ -13,7 +13,7 @@ defineProps({
 <template>
     <router-link to="/" class="main-header text-white flex items-center">
         <div class="flex items-center">
-            <img src="../assets/header-logo.svg" alt="Loghi">
+            <img src="../assets/header-logo.svg" alt="Loghi" class="mb-8">
         </div>
     </router-link>
 </template>

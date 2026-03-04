@@ -148,27 +148,34 @@ async function shot() {
 </script>
 
 <template>
-  <div class="shotOverlay absolute top-0 left-0 w-full h-full z-2 bg-white"></div>
-  <div 
-  v-if="countDown > 0"
-  class="countdown flex justify-center items-center absolute top-0 left-0 w-full h-full opacity-70 text-white text-4xl font-bold z-2">
-    {{ countDown }}
+  <div class="relative w-full min-h-screen">
+    <img src="../assets/background.svg" class="absolute top-0 left-0 w-full h-full object-cover z-0 pointer-events-none">
+    <div class="shotOverlay absolute top-0 left-0 w-full h-full z-2 bg-white"></div>
+    <div 
+      v-if="countDown > 0"
+      class="countdown flex justify-center items-center absolute top-0 left-0 w-full h-full opacity-70 text-white text-4xl font-bold z-2">
+      {{ countDown }}
+    </div>
+
+    <div class="relative z-10 flex flex-col items-center w-full">
+      <Header title="Mettiti in posa" />
+      <p class="text-white font-bold text-2xl sm:text-3xl md:text-4xl lg:text-6xl text-center mb-8 ">
+        LABA's photobooth
+      </p>
+      <polaroid class="mb-8">
+        <video ref="video" class="cam object-cover"></video>
+      </polaroid>
+      <select v-model="selectedDevice" @change="changeCamera" class="mt-2 p-2 rounded text-white">
+        <option v-for="device in videoDevices" :key="device.deviceId" :value="device.deviceId">
+          {{ device.label || `Camera ${videoDevices.indexOf(device) + 1}` }}
+        </option>
+      </select>
+      <button class="btn-primary rounded-full bg-[#FF7230] text-white w-fit mt-8" @click="shotPrepare" :disabled="isUploading">
+        {{ isUploading ? 'Caricamento...' : 'Scatta' }}
+      </button>
+    </div>
+
   </div>
-
-  <Header title="Mettiti in posa" />
-  <polaroid class="mb-8">
-    <video ref="video" class="cam object-cover"></video>
-  </polaroid>
-  
-  <select v-model="selectedDevice" @change="changeCamera" class="mt-2 p-2 rounded text-white">
-    <option v-for="device in videoDevices" :key="device.deviceId" :value="device.deviceId">
-      {{ device.label || `Camera ${videoDevices.indexOf(device) + 1}` }}
-    </option>
-  </select>
-
-  <button class="btn-primary mt-4" @click="shotPrepare" :disabled="isUploading">
-    {{ isUploading ? 'Caricamento...' : 'Scatta' }}
-  </button>
 </template>
 
 
