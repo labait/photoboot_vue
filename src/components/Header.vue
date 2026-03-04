@@ -11,9 +11,9 @@ defineProps({
 </script>
 
 <template>
-    <router-link to="/" class="main-header text-white flex items-center justify-between z-10 mt-8 mb-8 px-8">
+    <router-link to="/" class="main-header text-white flex items-center">
         <div class="flex items-center">
-            <img src="../assets/header-logo.png" alt="Loghi" class="w-800">
+            <img src="../assets/header-logo.svg" alt="Loghi">
         </div>
     </router-link>
 </template>
