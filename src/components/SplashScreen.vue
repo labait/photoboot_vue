@@ -11,7 +11,9 @@ const config = inject('config');
     <Header title="Benvenut*" />
 
     <div>
-      <p class="text-white font-bold text-6xl mb-8">LABA's photobooth</p>
+      <p class="text-white font-bold text-2xl sm:text-3xl md:text-4xl lg:text-6xl mb-8">
+        LABA's photobooth
+      </p>
       
       <div class="flex items-center gap-4 mb-8">
         <img src="../assets/txt.svg" class="w-1/2 h-auto object-cover block">
