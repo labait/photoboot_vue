@@ -10,7 +10,13 @@ export default async (request, context) => {
     const docId = url.searchParams.get('docId')
     const docRef = doc(db, 'items', docId)
     let docData = (await getDoc(docRef)).data();
-    const processUrl = docData.process_result.urls.get
+    console.log('docData', docData)
+    const processUrl = docData?.process_result?.urls?.get
+    if(!processUrl) {
+      return new Response(JSON.stringify(docData), {
+        status: 500,
+      })
+    }
     const processResponse = await fetch(
       processUrl,
       {
@@ -47,6 +53,7 @@ export default async (request, context) => {
 
     return new Response(JSON.stringify(docData))
   } catch (error) {
+    console.error(error)
     return new Response(error.toString(), {
       status: 500,
     })

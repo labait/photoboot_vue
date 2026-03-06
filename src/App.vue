@@ -5,6 +5,7 @@ import { storage, db } from './firebase'
 import { ref as storageRef, uploadString, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { collection, addDoc, serverTimestamp, updateDoc, doc, getDoc } from 'firebase/firestore'
 
+import Error from './components/Error.vue'
 import Footer from './components/Footer.vue'
 import Loading from './components/Loading.vue'
 
@@ -12,6 +13,7 @@ import Loading from './components/Loading.vue'
 const edition = import.meta.env.VITE_EDITION 
 
 const config = ref({
+  errorMessage: null,  
   countDownSeconds: 3,
   debug: false,
   isLoading: false,
@@ -26,6 +28,7 @@ window.config = config; // for debug purposes
 
 
 const getStorageUrl = async (str) => {
+  if(!str) return null;
   const url = str.split('\/o\/')[1].split("?")[0].replaceAll("%2F", "/")
   const imageRef = storageRef(storage, url)
   const storageUrl = await getDownloadURL(imageRef)
@@ -86,31 +89,36 @@ const getResult = async (docId) => {
   // call process function
   const getImageProcessedUrl = `/.netlify/functions/getImageProcessed?docId=${docId}`;
   console.log(`getImageProcessedUrl ${docId}, checkCount ${checkCount}`, getImageProcessedUrl);
-  const response = await fetch(getImageProcessedUrl);
-  const data = await response.json()
+  try {
+    const response = await fetch(getImageProcessedUrl)
+    const data = await response.json()
 
-  checkCount = checkCount + 1;
-  await updateDoc(docRef, {
-    check_count: checkCount,
-  })
+    checkCount = checkCount + 1;
+    await updateDoc(docRef, {
+      check_count: checkCount,
+    })
 
-  if (data.process_result.status == "succeeded") {    
-    config.value.docData = data;
-    console.log('docData', data)
-  } else {
-    if (checkCount < maxChecks) {
-      setTimeout(() => {
-        getResult(docId)
-      }, 5000)
+    if (data.process_result.status == "succeeded") {    
+      config.value.docData = data;
+      console.log('docData', data)
     } else {
-      console.log(`failed to get result after ${maxChecks} checks`)
-      await updateDoc(docRef, {
-        status: 'failed',
-      })
+      if (checkCount < maxChecks) {
+        setTimeout(() => {
+          getResult(docId)
+        }, 5000)
+      } else {
+        console.log(`failed to get result after ${maxChecks} checks`)
+        await updateDoc(docRef, {
+          status: 'failed',
+        })
+      }
     }
+  
+    return data;
+  } catch (error) {
+    config.value.errorMessage = `getResult, ${error.toString()}`;
+    return null;    
   }
- 
-  return data;
 }
 
 
@@ -129,6 +137,7 @@ provide('getStorageUrl', getStorageUrl);
 
 <template>
   <main class="flex flex-col items-center justify-center min-h-screen">
+    <Error />
     <Loading v-if="config.isLoading" />
     <router-view />
     <Footer />

@@ -33,7 +33,7 @@ export default async (request, context) => {
     }
     */
 
-    /* flux-2-pro */
+    /* flux-2-pro 
     const apiUrl = 'https://api.replicate.com/v1/models/black-forest-labs/flux-2-pro/predictions'
     const body = {
       input: {
@@ -46,7 +46,16 @@ export default async (request, context) => {
         safety_tolerance: 2
       }
     }
+    */
 
+    /* prunaai */
+    const apiUrl = 'https://api.replicate.com/v1/models/prunaai/p-image-edit/predictions'
+    const body = {
+      turbo: true,
+      images: [imageUrl],
+      prompt: process.env.VITE_PROMPT,
+      aspect_ratio: "1:1"
+    }
 
     const response = await fetch(
       apiUrl,

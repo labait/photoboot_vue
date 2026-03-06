@@ -56,7 +56,7 @@ const print = () => {
           <img :src="config.docData.image_source" class="w-full h-full object-cover block" />
         </Polaroid>
         <Polaroid :url="detailUrl(docId)" class="processed mb-8 active">
-          <img v-if="config.docData.image_processed" :src="config.docData.image_processed" class="w-full h-full object-cover block" />
+          <img v-if="config?.docData?.image_processed" :src="config.docData.image_processed" class="w-full h-full object-cover block" />
           <div v-else class="processing absolute p-10 top-0 left-0 w-full h-full flex flex-col items-center justify-center  text-white ">
             <p class="text-center font-bold text-xl">
               Elaborazione in corso
