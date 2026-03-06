@@ -1,4 +1,4 @@
-<script setup>
+  <script setup>
 import { ref, provide } from 'vue';
 
 import { storage, db } from './firebase'
@@ -26,6 +26,7 @@ window.config = config; // for debug purposes
 
 
 const getStorageUrl = async (str) => {
+  if(!str) return null;
   const url = str.split('\/o\/')[1].split("?")[0].replaceAll("%2F", "/")
   const imageRef = storageRef(storage, url)
   const storageUrl = await getDownloadURL(imageRef)
