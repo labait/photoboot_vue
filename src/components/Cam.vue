@@ -150,7 +150,7 @@ async function shot() {
 <template>
   <div class="relative w-full min-h-screen">
     <!-- Desktop: immagine originale -->
-<img src="../assets/background.svg" class="hidden sm:block absolute top-0 left-0 w-full h-full object-cover z-0 pointer-events-none">
+<img src="../assets/background.svg" class="hidden sm:block absolute top-0 left-0 w-full h-full object-cover z-0">
 
 <!-- Mobile: immagine diversa o stessa ma con fit diverso -->
 <img src="../assets/background-mobile.svg" class="block sm:hidden absolute top-0 left-0 w-full h-full object-cover z-0 pointer-events-none">
@@ -163,8 +163,8 @@ async function shot() {
     </div>
 
     <div class="relative z-10 flex flex-col items-center w-full">
-      <p class="text-white font-bold text-2xl sm:text-3xl md:text-4xl lg:text-6xl text-center mb-8 ">
-        LABA's photobooth
+      <p class="text-white font-medium text-2xl sm:text-3xl md:text-4xl lg:text-6xl text-center mb-4 ">
+        LABA'S PHOTOBOOTH
       </p>
       <polaroid class="mb-8">
         <video ref="video" class="cam object-cover"></video>
@@ -174,7 +174,7 @@ async function shot() {
           {{ device.label || `Camera ${videoDevices.indexOf(device) + 1}` }}
         </option>
       </select>
-      <button class="btn-primary rounded-full bg-[#FF7230] text-white w-fit mt-8" @click="shotPrepare" :disabled="isUploading">
+      <button class="btn-primary rounded-full bg-[#FF7230] text-white w-fit mt-8 mb-16" @click="shotPrepare" :disabled="isUploading">
         {{ isUploading ? 'Caricamento...' : 'Scatta' }}
       </button>
     </div>
