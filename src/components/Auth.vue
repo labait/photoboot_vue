@@ -7,15 +7,20 @@ import { auth, googleProvider, db } from '../firebase';
 const user = ref(null);
 const isLoading = ref(true);
 const error = ref(null);
+const isAdmin = ref(false);
 
 const ensureAccountExists = async (uid) => {
-  const accountRef = doc(db, 'account', uid);
+  const accountRef = doc(db, 'accounts', uid);
   const accountSnap = await getDoc(accountRef);
   if (!accountSnap.exists()) {
     await setDoc(accountRef, {
       uid,
       roles: [],
     });
+    isAdmin.value = false;
+  } else {
+    const data = accountSnap.data();
+    isAdmin.value = Array.isArray(data?.roles) && data.roles.includes('admin');
   }
 };
 
@@ -61,6 +66,7 @@ onUnmounted(() => {
     <template v-else-if="user">
       <div class="flex items-center gap-2">
         <img
+          referrerpolicy="no-referrer"
           v-if="user.photoURL"
           :src="user.photoURL"
           :alt="user.displayName || 'Avatar'"
@@ -77,6 +83,13 @@ onUnmounted(() => {
             {{ user.displayName || user.email }}
           </p>
         </div>
+        <router-link
+          v-if="isAdmin"
+          to="/admin"
+          class="cursor-pointer px-2 py-1 text-xs text-white/80 hover:text-white hover:bg-white/10 rounded transition-colors"
+        >
+          Admin
+        </router-link>
         <button
           type="button"
           @click="logout"

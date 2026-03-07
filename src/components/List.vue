@@ -123,7 +123,7 @@ const clickPolaroid = (item) => {
 
 <style>
 body {
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .polaroid {

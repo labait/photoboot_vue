@@ -4,6 +4,7 @@ import TestComponent from '../components/TestComponent.vue'
 import List from '../components/List.vue'
 import Cam from '../components/Cam.vue'
 import Detail from '../components/Detail.vue'
+import Admin from '../components/Admin.vue'
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: '/detail/:docId',
     name: 'detail',
     component: Detail,
+  },
+  {
+    path: '/admin',
+    name: 'admin',
+    component: Admin,
   }
 ]
 
