@@ -97,9 +97,66 @@ const print = () => {
 }
 
 
-@media only print and (max-width: 768px) {
+/* @media only print and (max-width: 768px) {
   .polaroid {
     transform: scale(1.2);
+  }
+} */
+
+@media print {
+  /* Nascondi tutto */
+  header,
+  .original,
+  .btn-wrapper,
+  img[src*="background"],
+  img[src*="background-mobile"],
+  img[src*="background.svg"],
+  img[src*="background-mobile.svg"] {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Sfondo bianco forzato */
+  * {
+    background: white !important;
+    background-color: white !important;
+    background-image: none !important;
+  }
+
+  .polaroids {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .processed {
+    transform: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  html, body {
+    min-height: 0 !important;
+    height: 148mm !important;
+    overflow: hidden !important;
+  }
+
+  /* Rimuove i bordi e le ombre della polaroid */
+  .polaroid {
+    box-shadow: none !important;
+    border: none !important;
+    background-color: white !important;
+  }
+
+  .polaroid-inner {
+    background-color: white !important;
+  }
+
+  /* Limita altezza pagina */
+  .relative.w-full {
+    min-height: 0 !important;
+    height: 148mm !important;
+    overflow: hidden !important;
   }
 }
 
