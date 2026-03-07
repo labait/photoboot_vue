@@ -4,7 +4,7 @@ import Header from './Header.vue'
 import Polaroid from './Polaroid.vue'
 
 const detailUrl = inject('detailUrl')
-const config = inject('config')
+const global = inject('global')
 const getStorageUrl = inject('getStorageUrl')
 
 const maxItems = 50
@@ -18,11 +18,11 @@ let currentPolaroid;
 let previousPolaroid;
 
 onMounted(async () => {
-    config.value.isLoading = true
+    global.value.isLoading = true
     const response = await fetch('/.netlify/functions/list')
     const data = await response.json()
     if(!data?.length) {
-        config.value.isLoading = false
+        global.value.isLoading = false
         return
     }
     // Shuffle the array using Fisher-Yates algorithm
@@ -40,7 +40,7 @@ onMounted(async () => {
             image_processed: await getStorageUrl(item.image_processed)
         }
     }))
-    config.value.isLoading = false
+    global.value.isLoading = false
     
     // setup the polaroids
     setTimeout(() => {
@@ -113,7 +113,7 @@ const clickPolaroid = (item) => {
 
 <template>
     <Header class="header" />
-    <div v-if="!config.isLoading" class="flex items-center justify-center polaroids">
+    <div v-if="!global.isLoading" class="flex items-center justify-center polaroids">
         
         <Polaroid v-for="item in items" :url="detailUrl(item.docId)" :key="item.docId" :id="`item-${item.docId}`" :data-image-id="item.image_id" class="polaroid" @click="clickPolaroid(item)">
             <img :src="item.image_source" class="absolute top-0 left-0 w-full h-full object-cover block image-source" />

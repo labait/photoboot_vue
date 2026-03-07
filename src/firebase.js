@@ -18,10 +18,10 @@ if (typeof window === 'undefined') {
 let firebaseApiKey = null;
 try {
   firebaseApiKey = import.meta.env.VITE_FIREBASE_API_KEY;
-  console.log('firebaseApiKey from import.meta.env', firebaseApiKey);
+  console.log('firebaseApiKey from import.meta.env');
 } catch (error) {
   firebaseApiKey = process.env.VITE_FIREBASE_API_KEY;
-  console.log('firebaseApiKey from process.env', firebaseApiKey);
+  console.log('firebaseApiKey from process.env');
 }
 
 const firebaseConfig = {

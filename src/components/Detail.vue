@@ -12,16 +12,16 @@ import { db } from '../firebase'
 const route = useRoute()
 const docId = ref(route.params.docId)
 
-const config = inject('config')
+const global = inject('global')
 const getResult = inject('getResult')
 const detailUrl = inject('detailUrl')
 const getStorageUrl = inject('getStorageUrl')
 
 const loadData = async () => {
-  //config.value.isLoading = true
+  //co  nfig.value.isLoading = true
   const docRef = doc(db, 'items', docId.value)
-  config.value.docData = (await getDoc(docRef)).data()
-  console.log(config.value.docData)
+  global.value.docData = (await getDoc(docRef)).data()
+  console.log(global.value.docData)
   await getResult(docId.value)
 
   const original = document.querySelector('.original')
@@ -29,10 +29,10 @@ const loadData = async () => {
   // original.style.display = 'block'
   // processed.style.display = 'none'
 
-  config.value.docData.image_source = await getStorageUrl(config.value.docData.image_source)
-  config.value.docData.image_processed = await getStorageUrl(config.value.docData.image_processed)
+  global.value.docData.image_source = await getStorageUrl(global.value.docData.image_source)
+  global.value.docData.image_processed = await getStorageUrl(global.value.docData.image_processed)
 
-  config.value.isLoading = false
+  global.value.isLoading = false
 }
 
 
@@ -49,14 +49,14 @@ const print = () => {
 <template>
   
   <div>
-    <Header :title="config.docData?.image_id" />
+    <Header :title="global.docData?.image_id" />
 
-    <div v-if="config.docData" class="polaroids">
+    <div v-if="global.docData" class="polaroids">
         <Polaroid class="original mb-8">
-          <img :src="config.docData.image_source" class="w-full h-full object-cover block" />
+          <img :src="global.docData.image_source" class="w-full h-full object-cover block" />
         </Polaroid>
         <Polaroid :url="detailUrl(docId)" class="processed mb-8 active">
-          <img v-if="config.docData.image_processed" :src="config.docData.image_processed" class="w-full h-full object-cover block" />
+          <img v-if="global.docData.image_processed" :src="global.docData.image_processed" class="w-full h-full object-cover block" />
           <div v-else class="processing absolute p-10 top-0 left-0 w-full h-full flex flex-col items-center justify-center  text-white ">
             <p class="text-center font-bold text-xl">
               Elaborazione in corso
@@ -71,7 +71,7 @@ const print = () => {
         <button class="btn-primary" @click="print">Stampa</button>
       </div>
     </div>
-    <Debug :data="config.docData" v-if="config.debug" />
+    <Debug :data="global.docData" v-if="global.isDebug()" />
   </div>
 </template>
 

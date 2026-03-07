@@ -3,7 +3,7 @@ import polaroid from './Polaroid.vue';
 import Header from './Header.vue';
 import { ref, inject } from 'vue';
 
-const config = inject('config');
+const global = inject('global');
 </script>
 
 <template>
@@ -20,7 +20,7 @@ const config = inject('config');
     </div>
     <div class="flex relative z-20 items-center justify-start">
       <router-link
-        v-if="config.features.camera"
+        v-if="global.features.camera"
         to="/cam"
         class="btn-primary rounded-full bg-[#FF7230] text-white w-fit px-6 py-3 text-sm sm:text-base"
       >

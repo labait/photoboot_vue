@@ -10,10 +10,13 @@ import Loading from './components/Loading.vue'
 
 
 const edition = import.meta.env.VITE_EDITION 
+const urlParams = new URLSearchParams(window.location.search);
 
-const config = ref({
+const global = ref({
   countDownSeconds: 3,
-  debug: false,
+  isDebug: () =>{
+    return urlParams.has('debug') || false;
+  },
   isLoading: false,
   currentImage: null,
   docData: null,
@@ -22,7 +25,7 @@ const config = ref({
     'camera': true,
   },
 })
-window.config = config; // for debug purposes
+window.global = global; // for debug purposes
 
 
 const getStorageUrl = async (str) => {
@@ -36,7 +39,7 @@ const getStorageUrl = async (str) => {
 
 const uploadImage = async (imageDataUrl, imageId) => {
   try {
-    config.value.isLoading = true;
+    global.value.isLoading = true;
 
     const docRef = await addDoc(collection(db, 'items'), {
       timestamp: serverTimestamp(),
@@ -47,16 +50,16 @@ const uploadImage = async (imageDataUrl, imageId) => {
 
     const imageRef = storageRef(storage, `images/${imageId}/${imageId}.png`)
     await uploadString(imageRef, imageDataUrl, 'data_url')
-    config.value.currentImage = imageDataUrl;
+    global.value.currentImage = imageDataUrl;
     const downloadURL = await getDownloadURL(imageRef)
     await updateDoc(docRef, {
       image_source: downloadURL,
     })
     
     const docData = (await getDoc(docRef)).data();
-    config.value.docData = docData;
-    config.value.docId = docRef.id;
-    console.log('docData',config.value)
+    global.value.docData = docData;
+    global.value.docId = docRef.id;
+    console.log('docData',global.value)
 
     // call process function
     const processUrl = `/.netlify/functions/processImage?docId=${docRef.id}`;
@@ -96,7 +99,7 @@ const getResult = async (docId) => {
   })
 
   if (data.process_result.status == "succeeded") {    
-    config.value.docData = data;
+    global.value.docData = data;
     console.log('docData', data)
   } else {
     if (checkCount < maxChecks) {
@@ -120,7 +123,7 @@ const detailUrl = (docId) => {
 }
 
 
-provide('config', config);
+provide('global', global);
 provide('uploadImage', uploadImage);
 provide('getResult', getResult);
 provide('detailUrl', detailUrl);
@@ -130,7 +133,7 @@ provide('getStorageUrl', getStorageUrl);
 
 <template>
   <main class="flex flex-col items-center justify-center min-h-screen">
-    <Loading v-if="config.isLoading" />
+    <Loading v-if="global.isLoading" />
     <router-view />
     <Footer />
   </main>

@@ -26,7 +26,7 @@ onMounted(async () => {
     selectedDevice.value = videoDevices.value[0].deviceId;
     await startCamera();
   }
-  if(!config.value.features.camera) {
+  if(!global.value.features.camera) {
     router.push('/');
   }
 });
@@ -71,7 +71,7 @@ async function changeCamera() {
 }
 
 async function shotPrepare() {
-  countDown.value = config.value.debug ? 1 : config.value.countDownSeconds;
+  countDown.value = global.value.isDebug() ? 1 : global.value.countDownSeconds;
   const showCount = () => {
     console.log(countDown.value);
   }
@@ -92,7 +92,7 @@ async function shotPrepare() {
 
 
 async function shot() {
-  if(!config.value.debug) sound1.play();
+  if(!global.value.isDebug()) sound1.play();
   //return; // debug
   if (!video.value) return;
 
@@ -117,7 +117,7 @@ async function shot() {
   image.value = canvas.value.toDataURL(`image/${imageExtension}`);
   
   // Download a local copy
-  if(config.value.debug) {
+  if(global.value.isDebug()) {
     const link = document.createElement('a');
     link.download = `${imageFilename}`;
     link.href = image.value;
@@ -130,19 +130,19 @@ async function shot() {
     if (result) {
       //console.log('Image processed successfully with result:', result);
       // go to detail page
-      config.value.isUploading = false
-      config.value.isLoading = false
-      router.push(`/detail/${config.value.docId}`);
+      global.value.isUploading = false
+      global.value.isLoading = false
+      router.push(`/detail/${global.value.docId}`);
     } else {
       console.error('Error processing image');
     }
     
     isUploading.value = false;
-    config.value.isLoading = false
+    global.value.isLoading = false
   } catch (error) {
     console.error('Error processing image:', error);
     isUploading.value = false;
-    config.value.isLoading = false
+    global.value.isLoading = false
   }
 }
 </script>
