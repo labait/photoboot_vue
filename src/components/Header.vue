@@ -1,6 +1,4 @@
 <script setup>
-import { ref } from 'vue';
-
 defineProps({
     title: {
         type: String,
@@ -11,7 +9,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="grid grid-cols-1 md:grid-cols-2 debug w-full mt-4">
+    <div class="relative grid grid-cols-1 md:grid-cols-2 w-full mt-4">
         <div class="flex justify-start md:justify-start">
             <router-link to="/" class="main-header text-white flex items-center">
                 <div class="flex items-center">
