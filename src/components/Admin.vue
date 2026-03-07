@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
 import { ref as storageRef, deleteObject } from 'firebase/storage';
 import { db, storage } from '../firebase';
+import Pagination from './Pagination.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -148,108 +149,63 @@ onMounted(loadItems);
     </div>
 
     <template v-else>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm text-white border-collapse">
-          <thead>
-            <tr class="border-b border-white/20">
-              <th class="py-3 px-2 font-medium">id</th>
-              <th class="py-3 px-2 font-medium">edition</th>
-              <th class="py-3 px-2 font-medium">image_id</th>
-              <th class="py-3 px-2 font-medium">image_source</th>
-              <th class="py-3 px-2 font-medium">image_processed</th>
-              <th class="py-3 px-2 font-medium">timestamp</th>
-              <th class="py-3 px-2 font-medium"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="item in paginatedItems"
-              :key="item.id"
-              class="border-b border-white/10 hover:bg-white/5"
+      <Pagination
+        v-if="totalPages > 1"
+        :current-page="currentPage"
+        :total-pages="totalPages"
+        class="mb-6"
+        @go-to-page="goToPage"
+      />
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <article
+          v-for="item in paginatedItems"
+          :key="item.id"
+          class="flex flex-col gap-3 p-4 rounded-lg bg-white/5 border border-white/10 text-white text-sm"
+        >
+          <div class="flex gap-2 w-full">
+            <router-link
+              :to="`/detail/${item.id}`"
+              class="flex-1 min-w-0 aspect-square rounded overflow-hidden hover:ring-2 hover:ring-[#FF7230] transition-shadow"
             >
-              <td class="py-3 px-2">
-                <router-link
-                  :to="`/detail/${item.id}`"
-                  class="text-[#FF7230] hover:underline"
-                >
-                  {{ item.id }}
-                </router-link>
-              </td>
-              <td class="py-3 px-2">{{ item.edition || '-' }}</td>
-              <td class="py-3 px-2">{{ item.image_id || '-' }}</td>
-              <td class="py-3 px-2">
-                <img
-                  v-if="item.image_source_url"
-                  :src="item.image_source_url"
-                  alt="source"
-                  class="w-20 h-20 object-cover rounded"
-                />
-                <span v-else class="text-white/50">-</span>
-              </td>
-              <td class="py-3 px-2">
-                <img
-                  v-if="item.image_processed_url"
-                  :src="item.image_processed_url"
-                  alt="processed"
-                  class="w-20 h-20 object-cover rounded"
-                />
-                <span v-else class="text-white/50">-</span>
-              </td>
-              <td class="py-3 px-2">{{ formatTimestamp(item.timestamp) }}</td>
-              <td class="py-3 px-2">
-                <button
-                  type="button"
-                  @click="deleteItem(item)"
-                  class="text-red-400 hover:text-red-300 hover:underline cursor-pointer"
-                >
-                  delete
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              <img
+                v-if="item.image_source_url"
+                :src="item.image_source_url"
+                alt="originale"
+                class="w-full h-full object-cover block"
+              />
+              <span v-else class="flex items-center justify-center w-full h-full min-h-[60px] bg-white/10 text-white/50 text-xs">-</span>
+            </router-link>
+            <div class="flex-1 min-w-0 aspect-square rounded overflow-hidden bg-white/5">
+              <img
+                v-if="item.image_processed_url"
+                :src="item.image_processed_url"
+                alt="processata"
+                class="w-full h-full object-cover block"
+              />
+              <span v-else class="flex items-center justify-center w-full h-full min-h-[60px] text-white/50 text-xs">-</span>
+            </div>
+          </div>
+          <div class="flex flex-col gap-0.5 text-xs sm:text-sm">
+            <span>{{ formatTimestamp(item.timestamp) }}</span>
+            <span class="text-white/70">{{ item.edition || '-' }}</span>
+          </div>
+          <button
+            type="button"
+            @click="deleteItem(item)"
+            class="text-red-400 hover:text-red-300 hover:underline cursor-pointer text-xs sm:text-sm self-start"
+          >
+            delete
+          </button>
+        </article>
       </div>
 
-      <div
+      <Pagination
         v-if="totalPages > 1"
-        class="flex items-center justify-center gap-2 mt-6"
-      >
-        <button
-          type="button"
-          :disabled="currentPage <= 1"
-          @click="goToPage(1)"
-          class="px-3 py-1 rounded bg-white/10 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20"
-        >
-          « Prima
-        </button>
-        <button
-          type="button"
-          :disabled="currentPage <= 1"
-          @click="goToPage(currentPage - 1)"
-          class="px-3 py-1 rounded bg-white/10 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20"
-        >
-          ←
-        </button>
-        <span class="text-white/80">
-          {{ currentPage }} / {{ totalPages }}
-        </span>
-        <button
-          type="button"
-          :disabled="currentPage >= totalPages"
-          @click="goToPage(currentPage + 1)"
-          class="px-3 py-1 rounded bg-white/10 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20"
-        >
-          →
-        </button>
-        <button
-          type="button"
-          :disabled="currentPage >= totalPages"
-          @click="goToPage(totalPages)"
-          class="px-3 py-1 rounded bg-white/10 text-white disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white/20"
-        >
-          Ultima »
-        </button>
-      </div>
+        :current-page="currentPage"
+        :total-pages="totalPages"
+        class="mt-6"
+        @go-to-page="goToPage"
+      />
     </template>
   </div>
 </template>
