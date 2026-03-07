@@ -163,7 +163,6 @@ async function shot() {
     </div>
 
     <div class="relative z-10 flex flex-col items-center w-full">
-      <Header title="Mettiti in posa" />
       <p class="text-white font-bold text-2xl sm:text-3xl md:text-4xl lg:text-6xl text-center mb-8 ">
         LABA's photobooth
       </p>

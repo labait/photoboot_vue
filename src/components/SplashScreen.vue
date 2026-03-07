@@ -8,7 +8,6 @@ const global = inject('global');
 
 <template>
   <div class="px-4 sm:px-8 md:px-16 min-h-screen flex flex-col justify-center">
-    <Header title="Benvenut*" />
     <div>
       <p class="text-white font-bold text-2xl sm:text-3xl md:text-4xl lg:text-6xl mb-6 md:mb-8">
         LABA's photobooth

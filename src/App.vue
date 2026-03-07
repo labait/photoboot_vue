@@ -5,6 +5,7 @@ import { storage, db } from './firebase'
 import { ref as storageRef, uploadString, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { collection, addDoc, serverTimestamp, updateDoc, doc, getDoc } from 'firebase/firestore'
 
+import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import Loading from './components/Loading.vue'
 
@@ -132,10 +133,13 @@ provide('getStorageUrl', getStorageUrl);
 </script>
 
 <template>
-  <main class="flex flex-col items-center justify-center min-h-screen">
-    <Loading v-if="global.isLoading" />
-    <router-view />
-    <Footer />
+  <main class="px-4">
+    <div class="flex flex-col items-center justify-center min-h-screen debug max-w-5xl mx-auto">
+      <Loading v-if="global.isLoading" />
+      <Header />
+      <router-view />
+      <Footer />
+    </div>
   </main>
 </template>
 

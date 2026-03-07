@@ -112,7 +112,6 @@ const clickPolaroid = (item) => {
 
 
 <template>
-    <Header class="header" />
     <div v-if="!global.isLoading" class="flex items-center justify-center polaroids">
         
         <Polaroid v-for="item in items" :url="detailUrl(item.docId)" :key="item.docId" :id="`item-${item.docId}`" :data-image-id="item.image_id" class="polaroid" @click="clickPolaroid(item)">

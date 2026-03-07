@@ -49,7 +49,6 @@ const print = () => {
 <template>
   
   <div>
-    <Header :title="global.docData?.image_id" />
 
     <div v-if="global.docData" class="polaroids">
         <Polaroid class="original mb-8">
