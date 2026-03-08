@@ -158,12 +158,12 @@ async function shot() {
     <div class="shotOverlay absolute top-0 left-0 w-full h-full z-2 bg-white"></div>
     <div 
       v-if="countDown > 0"
-      class="countdown flex justify-center items-center absolute top-0 left-0 w-full h-full opacity-70 text-white text-4xl font-bold z-2">
+      class="flex justify-center items-center absolute top-0 left-0 w-full h-90 opacity-70 text-[#FF7230] text-[50vw] sm:text-[30vw] font-bold z-9999">
       {{ countDown }}
     </div>
 
     <div class="relative z-10 flex flex-col items-center w-full">
-      <p class="text-white font-medium text-2xl sm:text-3xl md:text-4xl lg:text-6xl text-center mb-4 ">
+      <p class="text-white font-medium text-[8vw] sm:text-[4vw] text-center">
         LABA'S PHOTOBOOTH
       </p>
       <polaroid class="mb-8">
@@ -174,7 +174,7 @@ async function shot() {
           {{ device.label || `Camera ${videoDevices.indexOf(device) + 1}` }}
         </option>
       </select>
-      <button class="btn-primary rounded-full bg-[#FF7230] text-white w-fit mt-8 mb-16" @click="shotPrepare" :disabled="isUploading">
+      <button class="btn-primary rounded-60 bg-[#FF7230] text-white w-fit mt-8 mb-16" @click="shotPrepare" :disabled="isUploading">
         {{ isUploading ? 'Caricamento...' : 'Scatta' }}
       </button>
     </div>
@@ -189,9 +189,6 @@ async function shot() {
     height: 100%;
     object-fit: cover;
     transform: scaleX(-1); /* Mirror the webcam image horizontally */
-}
-.countdown {
-  font-size: 50vw;
 }
 .shotOverlay {
   opacity: 0;
