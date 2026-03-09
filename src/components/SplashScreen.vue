@@ -27,9 +27,9 @@ const global = inject('global');
 
       <router-link
         v-if="global.features.camera"
-        to="/cam"
+        to="/list"
         class="btn-secondary">
-        Scopri l'esperienza
+        Vai alla raccolta
       </router-link>
     </div>
   </div>
