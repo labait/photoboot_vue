@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, inject } from 'vue'
-import Header from './Header.vue'
+import { RouterLink } from 'vue-router'
 import Polaroid from './Polaroid.vue'
 
 const detailUrl = inject('detailUrl')
@@ -10,12 +10,14 @@ const getStorageUrl = inject('getStorageUrl')
 const maxItems = 50
 const maxRotation = 30
 const safePadding = 200
-const nextInterval = 6000
+const nextInterval = 226000
 const items = ref([])
 let nextTimeout;
 let currentItem;
 let currentPolaroid;
 let previousPolaroid;
+
+inject('detailUrl', detailUrl)
 
 onMounted(async () => {
     global.value.isLoading = true
@@ -113,11 +115,15 @@ const clickPolaroid = (item) => {
 
 
 <template>
-    <div v-if="!global.isLoading" class="flex items-center justify-center polaroids">
-        
-        <Polaroid v-for="item in items" :url="detailUrl(item.docId)" :key="item.docId" :id="`item-${item.docId}`" :data-image-id="item.image_id" class="polaroid" @click="clickPolaroid(item)">
-            <img :src="item.image_source" class="absolute top-0 left-0 w-full h-full object-cover block image-source" />
-            <img :src="item.image_processed" class="absolute top-0 left-0 w-full h-full object-cover block image-processed" />
+    <div v-if="!global.isLoading" class="flex h-screen absolute top-0 left-0 w-full items-center justify-center polaroids">
+        <Polaroid v-for="item in items" :url="detailUrl(item.docId)" :key="item.docId" :id="`item-${item.docId}`" :data-image-id="item.image_id" class="polaroid" >
+            <img :src="item.image_source" class="absolute top-0 left-0 w-full h-full object-cover block image-source" @click="clickPolaroid(item)" />
+            <img :src="item.image_processed" class="absolute top-0 left-0 w-full h-full object-cover block image-processed" @click="clickPolaroid(item)" />
+            <template v-slot:footer> 
+                <div class="flex justify-center w-full text-sm hover:underline mb-2 gap-2">
+                    <a :href="detailUrl(item.docId)" class="w-full h-10"></a>
+                </div>
+            </template>
         </Polaroid>
     </div>
 </template>

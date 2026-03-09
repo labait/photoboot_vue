@@ -1,18 +1,50 @@
 @import 'tailwindcss';
 
 @layer components {
+    :root {
+        --btn-primary-color: #FF7230;
+        --btn-primary-color-hover: #ff7230/80;
+    }
 
     .btn-primary {
-        @apply px-6 
-        py-3
-        bg-white
-        text-black
+        @apply
         rounded-lg
         font-medium
-        hover:bg-blue-50
-        transition-colors;
+        transition-colors
+        w-fit 
+        px-6 
+        py-3 
+        text-sm 
+        sm:text-base 
+        whitespace-nowrap
+
+        bg-[var(--btn-primary-color)] 
+        hover:bg-[var(--btn-primary-color)]/80
+        text-white
+        ;
         cursor: pointer;
     }
+
+    .btn-secondary {
+        @apply
+        rounded-lg
+        font-medium
+        transition-colors
+        w-fit 
+        px-6 
+        py-3 
+        text-sm 
+        sm:text-base 
+        whitespace-nowrap
+
+        bg-white
+        text-black
+        hover:bg-white/80
+        ;
+        
+        cursor: pointer;
+    }
+    
 
     .debug- {
         @apply border border-white;
@@ -32,3 +64,7 @@
     }
 }
 
+
+body {
+  background-color: #2b2b2b;
+}

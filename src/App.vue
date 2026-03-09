@@ -9,7 +9,7 @@ import { collection, addDoc, serverTimestamp, updateDoc, doc, getDoc } from 'fir
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import Loading from './components/Loading.vue'
-import Login from './components/login.vue'
+import Auth from './components/Auth.vue'
 
 
 const edition = import.meta.env.VITE_EDITION 
@@ -135,17 +135,14 @@ provide('getStorageUrl', getStorageUrl);
 </script>
 
 <template>
-  <main class="px-4">
-    <div class="flex flex-col items-center justify-center min-h-screen debug max-w-7xl mx-auto">
+  <main class="p-4 md:p-8">
+    <div class="flex flex-col debug max-w-7xl mx-auto">
       <Loading v-if="global.isLoading" />
-      <div class="grid grid-cols-1 md:grid-cols-2 w-full mt-4">
-        <div class="col-span-1">  
-        </div>
-        <!-- <div class="col-span-1 flex items-center justify-end">
+      <div class="flex justify-end w-full print:hidden">
+        <div class="auth-btn">
           <Auth />
-        </div> -->
+        </div>
       </div>
-      <Login />
       <Header />
       <router-view />
       <Footer />
@@ -153,8 +150,6 @@ provide('getStorageUrl', getStorageUrl);
   </main>
 </template>
 
-<style scoped>
-main {
-  background-color: #2b2b2b;
-}
+<style>
+
 </style>

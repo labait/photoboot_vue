@@ -19,6 +19,9 @@ defineProps({
             </a>
             <slot /> 
        </div>
+       <div class="absolute left-0 w-full flex bottom-0">
+            <slot name="footer"></slot>
+       </div>
     </div>
 </template>
 
