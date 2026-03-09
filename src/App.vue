@@ -135,10 +135,10 @@ provide('getStorageUrl', getStorageUrl);
 </script>
 
 <template>
-  <main class="px-4 md:px-8">
-    <div class="flex flex-col items-center justify-center min-h-screen debug max-w-7xl mx-auto">
+  <main class="px-4 md:p-8">
+    <div class="flex flex-col debug max-w-7xl mx-auto">
       <Loading v-if="global.isLoading" />
-      <div class="flex justify-end w-full">
+      <div class="flex justify-end w-full print:hidden">
         <div class="auth-btn">
           <Auth />
         </div>
@@ -150,8 +150,6 @@ provide('getStorageUrl', getStorageUrl);
   </main>
 </template>
 
-<style scoped>
-main {
-  background-color: #2b2b2b;
-}
+<style>
+
 </style>

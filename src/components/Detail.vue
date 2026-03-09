@@ -17,6 +17,9 @@ const getResult = inject('getResult')
 const detailUrl = inject('detailUrl')
 const getStorageUrl = inject('getStorageUrl')
 
+inject('detailUrl', detailUrl)
+
+
 const loadData = async () => {
   //co  nfig.value.isLoading = true
   const docRef = doc(db, 'items', docId.value)
@@ -47,7 +50,7 @@ const print = () => {
 </script>
 
 <template>
-  <div class="relative w-full min-h-screen overflow-visible">
+  <div class="">
     <!-- Background -->
     <img src="../assets/background.svg" class="hidden sm:block absolute top-0 left-0 w-full h-full object-cover z-0 pointer-events-none">
     <img src="../assets/background-mobile.svg" class="block sm:hidden absolute top-0 left-0 w-full h-full object-cover z-0 pointer-events-none">
@@ -65,10 +68,11 @@ const print = () => {
         </div>
       </Polaroid>
     </div>
+    
 
     <div class="btn-wrapper fixed flex justify-center bottom-0 right-0 left-0 m-10 z-10000">
       <div class="p-4">
-        <button class="btn-primary rounded-full bg-[#FF7230] text-white w-fit mt-16 mb-4" @click="print">Stampa</button>
+        <button class="btn-primary" @click="print">Stampa</button>
       </div>
     </div>
 
@@ -97,68 +101,12 @@ const print = () => {
 }
 
 
-/* @media only print and (max-width: 768px) {
+@media only print {
   .polaroid {
     transform: scale(1.2);
   }
-} */
-
-@media print {
-  /* Nascondi tutto */
-  header,
-  .original,
-  .btn-wrapper,
-  img[src*="background"],
-  img[src*="background-mobile"],
-  img[src*="background.svg"],
-  img[src*="background-mobile.svg"] {
-    display: none !important;
-    visibility: hidden !important;
-  }
-
-  /* Sfondo bianco forzato */
-  * {
-    background: white !important;
-    background-color: white !important;
-    background-image: none !important;
-  }
-
-  .polaroids {
-    display: block !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
-  .processed {
-    transform: none !important;
-    margin: 0 !important;
-    width: 100% !important;
-  }
-
-  html, body {
-    min-height: 0 !important;
-    height: 148mm !important;
-    overflow: hidden !important;
-  }
-
-  /* Rimuove i bordi e le ombre della polaroid */
-  .polaroid {
-    box-shadow: none !important;
-    border: none !important;
-    background-color: white !important;
-  }
-
-  .polaroid-inner {
-    background-color: white !important;
-  }
-
-  /* Limita altezza pagina */
-  .relative.w-full {
-    min-height: 0 !important;
-    height: 148mm !important;
-    overflow: hidden !important;
-  }
 }
+
 
 @media only screen and (max-width: 768px) {
   .polaroid {
@@ -166,7 +114,7 @@ const print = () => {
   }
 }
 
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .polaroids {
     margin-top: 0px;
     flex-direction: row;
