@@ -56,8 +56,8 @@ const print = () => {
     <img src="../assets/background-mobile.svg" class="block sm:hidden absolute top-0 left-0 w-full h-full object-cover z-0 pointer-events-none">
 
     <!-- Contenuto -->
-    <div v-if="global.docData" class="polaroids relative z-10 flex flex-col items-center justify-center pt-4 overflow-visible">
-      <Polaroid class="original mb-48">
+    <div v-if="global.docData" class="polaroids relative z-10 flex flex-col items-center justify-center overflow-visible">
+      <Polaroid class="original">
         <img :src="global.docData.image_source" class="w-full h-full object-cover block" />
       </Polaroid>
       <Polaroid :url="detailUrl(docId)" class="processed mb-16 active">

@@ -135,7 +135,7 @@ provide('getStorageUrl', getStorageUrl);
 </script>
 
 <template>
-  <main class="px-4 md:p-8">
+  <main class="p-4 md:p-8">
     <div class="flex flex-col debug max-w-7xl mx-auto">
       <Loading v-if="global.isLoading" />
       <div class="flex justify-end w-full print:hidden">
