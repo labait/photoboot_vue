@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue';
 
 defineProps({
     title: {
@@ -11,11 +10,22 @@ defineProps({
 </script>
 
 <template>
-    <router-link to="/" class="main-header text-white mb-8 flex items-center justify-center z-10 mt-8 mb-8">
-        <div class="flex flex-col items-center">
-            <img src="../assets/logo_laba.svg" alt="Logo" class="w-48 mb-4">
+    <div class="relative grid grid-cols-2 md:grid-cols-2 w-full py-12 md:pt-4 md:pb-0">
+        <div class="flex">
+            <router-link to="/" class="main-header text-white flex items-center">
+                <div class="flex items-center">
+                    <img src="../assets/logo-laba.svg" alt="Loghi" class="mb-4 w-30 sm:w-36 md:w-40 lg:w-48">
+                </div>
+            </router-link>
         </div>
-    </router-link>
+        <div class="flex justify-end md:justify-end">
+            <router-link to="/" class="main-header text-white flex items-center">
+                <div class="flex items-center">
+                    <img src="../assets/logo-sfa.svg" alt="Loghi" class="mb-4 w-20 md:w-28 lg:w-30">
+                </div>
+            </router-link>
+        </div>
+    </div>
 </template>
 
 <style scoped>

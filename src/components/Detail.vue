@@ -12,16 +12,16 @@ import { db } from '../firebase'
 const route = useRoute()
 const docId = ref(route.params.docId)
 
-const config = inject('config')
+const global = inject('global')
 const getResult = inject('getResult')
 const detailUrl = inject('detailUrl')
 const getStorageUrl = inject('getStorageUrl')
 
 const loadData = async () => {
-  //config.value.isLoading = true
+  //co  nfig.value.isLoading = true
   const docRef = doc(db, 'items', docId.value)
-  config.value.docData = (await getDoc(docRef)).data()
-  console.log(config.value.docData)
+  global.value.docData = (await getDoc(docRef)).data()
+  console.log(global.value.docData)
   await getResult(docId.value)
 
   const original = document.querySelector('.original')
@@ -29,10 +29,10 @@ const loadData = async () => {
   // original.style.display = 'block'
   // processed.style.display = 'none'
 
-  config.value.docData.image_source = await getStorageUrl(config.value.docData.image_source)
-  config.value.docData.image_processed = await getStorageUrl(config.value.docData.image_processed)
+  global.value.docData.image_source = await getStorageUrl(global.value.docData.image_source)
+  global.value.docData.image_processed = await getStorageUrl(global.value.docData.image_processed)
 
-  config.value.isLoading = false
+  global.value.isLoading = false
 }
 
 
@@ -47,31 +47,32 @@ const print = () => {
 </script>
 
 <template>
-  
-  <div>
-    <Header :title="config.docData?.image_id" />
+  <div class="relative w-full min-h-screen overflow-visible">
+    <!-- Background -->
+    <img src="../assets/background.svg" class="hidden sm:block absolute top-0 left-0 w-full h-full object-cover z-0 pointer-events-none">
+    <img src="../assets/background-mobile.svg" class="block sm:hidden absolute top-0 left-0 w-full h-full object-cover z-0 pointer-events-none">
 
-    <div v-if="config.docData" class="polaroids">
-        <Polaroid class="original mb-8">
-          <img :src="config.docData.image_source" class="w-full h-full object-cover block" />
-        </Polaroid>
-        <Polaroid :url="detailUrl(docId)" class="processed mb-8 active">
-          <img v-if="config.docData.image_processed" :src="config.docData.image_processed" class="w-full h-full object-cover block" />
-          <div v-else class="processing absolute p-10 top-0 left-0 w-full h-full flex flex-col items-center justify-center  text-white ">
-            <p class="text-center font-bold text-xl">
-              Elaborazione in corso
-            </p>
-            fai refresh o attendi qualche secondo...
-          </div>
-        </Polaroid>
+    <!-- Contenuto -->
+    <div v-if="global.docData" class="polaroids relative z-10 flex flex-col items-center justify-center pt-4 overflow-visible">
+      <Polaroid class="original mb-48">
+        <img :src="global.docData.image_source" class="w-full h-full object-cover block" />
+      </Polaroid>
+      <Polaroid :url="detailUrl(docId)" class="processed mb-16 active">
+        <img v-if="global.docData.image_processed" :src="global.docData.image_processed" class="w-full h-full object-cover block" />
+        <div v-else class="processing absolute p-3 top-0 left-0 w-full h-full flex flex-col items-center justify-center text-white">
+          <p class="text-center font-bold text-xl">Elaborazione in corso</p>
+          fai refresh o attendi qualche secondo...
+        </div>
+      </Polaroid>
     </div>
 
-    <div class="btn-wrapper fixed flex justify-end bottom-0 right-0 left-0 m-10 z-10000">
+    <div class="btn-wrapper fixed flex justify-center bottom-0 right-0 left-0 m-10 z-10000">
       <div class="p-4">
-        <button class="btn-primary" @click="print">Stampa</button>
+        <button class="btn-primary rounded-full bg-[#FF7230] text-white w-fit mt-16 mb-4" @click="print">Stampa</button>
       </div>
     </div>
-    <Debug :data="config.docData" v-if="config.debug" />
+
+    <Debug :data="global.docData" v-if="global.isDebug()" />
   </div>
 </template>
 
@@ -96,9 +97,66 @@ const print = () => {
 }
 
 
-@media only print and (max-width: 768px) {
+/* @media only print and (max-width: 768px) {
   .polaroid {
     transform: scale(1.2);
+  }
+} */
+
+@media print {
+  /* Nascondi tutto */
+  header,
+  .original,
+  .btn-wrapper,
+  img[src*="background"],
+  img[src*="background-mobile"],
+  img[src*="background.svg"],
+  img[src*="background-mobile.svg"] {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Sfondo bianco forzato */
+  * {
+    background: white !important;
+    background-color: white !important;
+    background-image: none !important;
+  }
+
+  .polaroids {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .processed {
+    transform: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  html, body {
+    min-height: 0 !important;
+    height: 148mm !important;
+    overflow: hidden !important;
+  }
+
+  /* Rimuove i bordi e le ombre della polaroid */
+  .polaroid {
+    box-shadow: none !important;
+    border: none !important;
+    background-color: white !important;
+  }
+
+  .polaroid-inner {
+    background-color: white !important;
+  }
+
+  /* Limita altezza pagina */
+  .relative.w-full {
+    min-height: 0 !important;
+    height: 148mm !important;
+    overflow: hidden !important;
   }
 }
 
@@ -110,15 +168,15 @@ const print = () => {
 
 @media (min-width: 768px) {
   .polaroids {
-    margin-top: 200px;
+    margin-top: 0px;
     flex-direction: row;
     .original {
-      transform: translate(-10%, 50%) scale(0.7) rotate(-10deg);
+      transform: translate(-10%, 0%) scale(0.7) rotate(-10deg);
       z-index: 1;
     }
 
     .processed {
-      transform: translateX(-40%) scale(1.5) rotate(5deg);
+      transform: translateX(-30%) scale(1.2) rotate(5deg);
     }
   } 
 }

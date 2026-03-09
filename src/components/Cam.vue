@@ -26,7 +26,7 @@ onMounted(async () => {
     selectedDevice.value = videoDevices.value[0].deviceId;
     await startCamera();
   }
-  if(!config.value.features.camera) {
+  if(!global.value.features.camera) {
     router.push('/');
   }
 });
@@ -71,7 +71,7 @@ async function changeCamera() {
 }
 
 async function shotPrepare() {
-  countDown.value = config.value.debug ? 1 : config.value.countDownSeconds;
+  countDown.value = global.value.isDebug() ? 1 : global.value.countDownSeconds;
   const showCount = () => {
     console.log(countDown.value);
   }
@@ -92,7 +92,7 @@ async function shotPrepare() {
 
 
 async function shot() {
-  if(!config.value.debug) sound1.play();
+  if(!global.value.isDebug()) sound1.play();
   //return; // debug
   if (!video.value) return;
 
@@ -117,7 +117,7 @@ async function shot() {
   image.value = canvas.value.toDataURL(`image/${imageExtension}`);
   
   // Download a local copy
-  if(config.value.debug) {
+  if(global.value.isDebug()) {
     const link = document.createElement('a');
     link.download = `${imageFilename}`;
     link.href = image.value;
@@ -130,45 +130,56 @@ async function shot() {
     if (result) {
       //console.log('Image processed successfully with result:', result);
       // go to detail page
-      config.value.isUploading = false
-      config.value.isLoading = false
-      router.push(`/detail/${config.value.docId}`);
+      global.value.isUploading = false
+      global.value.isLoading = false
+      router.push(`/detail/${global.value.docId}`);
     } else {
       console.error('Error processing image');
     }
     
     isUploading.value = false;
-    config.value.isLoading = false
+    global.value.isLoading = false
   } catch (error) {
     console.error('Error processing image:', error);
     isUploading.value = false;
-    config.value.isLoading = false
+    global.value.isLoading = false
   }
 }
 </script>
 
 <template>
-  <div class="shotOverlay absolute top-0 left-0 w-full h-full z-2 bg-white"></div>
-  <div 
-  v-if="countDown > 0"
-  class="countdown flex justify-center items-center absolute top-0 left-0 w-full h-full opacity-70 text-white text-4xl font-bold z-2">
-    {{ countDown }}
+  <div class="relative w-full min-h-screen">
+    <!-- Desktop: immagine originale -->
+<img src="../assets/background.svg" class="hidden sm:block absolute top-0 left-0 w-full h-full object-cover z-0">
+
+<!-- Mobile: immagine diversa o stessa ma con fit diverso -->
+<img src="../assets/background-mobile.svg" class="block sm:hidden absolute top-0 left-0 w-full h-full object-cover z-0 pointer-events-none">
+
+    <div class="shotOverlay absolute top-0 left-0 w-full h-full z-2 bg-white"></div>
+    <div 
+      v-if="countDown > 0"
+      class="flex justify-center items-center absolute top-0 left-0 w-full h-90 opacity-70 text-[#FF7230] text-[50vw] sm:text-[30vw] font-bold z-9999">
+      {{ countDown }}
+    </div>
+
+    <div class="relative z-10 flex flex-col items-center w-full">
+      <p class="text-white font-medium text-[8vw] sm:text-[4vw] text-center">
+        LABA'S PHOTOBOOTH
+      </p>
+      <polaroid class="mb-8">
+        <video ref="video" class="cam object-cover"></video>
+      </polaroid>
+      <select v-model="selectedDevice" @change="changeCamera" class="mt-2 p-2 rounded text-white">
+        <option v-for="device in videoDevices" :key="device.deviceId" :value="device.deviceId">
+          {{ device.label || `Camera ${videoDevices.indexOf(device) + 1}` }}
+        </option>
+      </select>
+      <button class="btn-primary rounded-60 bg-[#FF7230] text-white w-fit mt-4 mb-16" @click="shotPrepare" :disabled="isUploading">
+        {{ isUploading ? 'Caricamento...' : 'Scatta' }}
+      </button>
+    </div>
+
   </div>
-
-  <Header title="Mettiti in posa" />
-  <polaroid class="mb-8">
-    <video ref="video" class="cam object-cover"></video>
-  </polaroid>
-  
-  <select v-model="selectedDevice" @change="changeCamera" class="mt-2 p-2 rounded text-white">
-    <option v-for="device in videoDevices" :key="device.deviceId" :value="device.deviceId">
-      {{ device.label || `Camera ${videoDevices.indexOf(device) + 1}` }}
-    </option>
-  </select>
-
-  <button class="btn-primary mt-4" @click="shotPrepare" :disabled="isUploading">
-    {{ isUploading ? 'Caricamento...' : 'Scatta' }}
-  </button>
 </template>
 
 
@@ -178,9 +189,6 @@ async function shot() {
     height: 100%;
     object-fit: cover;
     transform: scaleX(-1); /* Mirror the webcam image horizontally */
-}
-.countdown {
-  font-size: 50vw;
 }
 .shotOverlay {
   opacity: 0;
