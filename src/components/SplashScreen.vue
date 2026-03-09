@@ -7,7 +7,7 @@ const global = inject('global');
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col justify-start w-full">
+  <div class="flex flex-col justify-start w-full">
     <div>
       <p class="text-white font-medium text-[8vw] sm:text-[4vw] py-2">
         LABA'S PHOTOBOOTH
