@@ -10,7 +10,7 @@ const getStorageUrl = inject('getStorageUrl')
 const maxItems = 50
 const maxRotation = 30
 const safePadding = 200
-const nextInterval = 20000
+const nextInterval = 6000
 const items = ref([])
 let nextTimeout;
 let currentItem;
@@ -76,12 +76,13 @@ const showPolaroid = (docId) => {
     console.log(docId)
     currentItem = items.value.find(item => item.docId === docId)
     currentPolaroid = document.getElementById(`item-${docId}`)
-    if(!currentPolaroid || currentPolaroid === previousPolaroid) return
-    hidePreviousPolaroid()
-    currentPolaroid.style.transform = `translate(0, 0) rotate(0deg) scale(1.5)`
-    currentPolaroid.style.zIndex = 2000
-    currentPolaroid.classList.add('active')
-    previousPolaroid = currentPolaroid
+    if(currentPolaroid || currentPolaroid !== previousPolaroid) {
+        hidePreviousPolaroid()
+        currentPolaroid.style.transform = `translate(0, 0) rotate(0deg) scale(1.5)`
+        currentPolaroid.style.zIndex = 2000
+        currentPolaroid.classList.add('active')
+        previousPolaroid = currentPolaroid
+    }
     clearTimeout(nextTimeout);
     nextTimeout = setTimeout(() => {
         const item = getRandomItem()
