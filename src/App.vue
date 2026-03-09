@@ -9,6 +9,7 @@ import { collection, addDoc, serverTimestamp, updateDoc, doc, getDoc } from 'fir
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import Loading from './components/Loading.vue'
+import Login from './components/login.vue'
 
 
 const edition = import.meta.env.VITE_EDITION 
@@ -144,6 +145,7 @@ provide('getStorageUrl', getStorageUrl);
           <Auth />
         </div> -->
       </div>
+      <Login />
       <Header />
       <router-view />
       <Footer />

@@ -174,7 +174,7 @@ async function shot() {
           {{ device.label || `Camera ${videoDevices.indexOf(device) + 1}` }}
         </option>
       </select>
-      <button class="btn-primary rounded-60 bg-[#FF7230] text-white w-fit mt-8 mb-16" @click="shotPrepare" :disabled="isUploading">
+      <button class="btn-primary rounded-60 bg-[#FF7230] text-white w-fit mt-4 mb-16" @click="shotPrepare" :disabled="isUploading">
         {{ isUploading ? 'Caricamento...' : 'Scatta' }}
       </button>
     </div>
