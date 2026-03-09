@@ -17,11 +17,18 @@ const global = inject('global');
         <img src="../assets/polaroid.svg" class="w-full sm:w-[35vw] h-auto object-cover block">
       </div>
     </div>
-    <div class="flex relative z-20 items-center justify-start">
+    <div class="flex relative z-20 items-center justify-start mb-16">
       <router-link
         v-if="global.features.camera"
         to="/cam"
-        class="btn-primary mb-16">
+        class="btn-primary mr-4">
+        Scopri l'esperienza
+      </router-link>
+
+      <router-link
+        v-if="global.features.camera"
+        to="/cam"
+        class="btn-secondary">
         Scopri l'esperienza
       </router-link>
     </div>

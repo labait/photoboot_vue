@@ -1,12 +1,15 @@
 @import 'tailwindcss';
 
 @layer components {
+    :root {
+        --btn-primary-color: #FF7230;
+        --btn-primary-color-hover: #ff7230/80;
+    }
 
     .btn-primary {
         @apply
         rounded-lg
         font-medium
-        hover:bg-blue-50
         transition-colors
         w-fit 
         px-6 
@@ -14,7 +17,8 @@
         text-sm 
         sm:text-base 
 
-        bg-[#FF7230] 
+        bg-[var(--btn-primary-color)] 
+        hover:bg-[var(--btn-primary-color)]/80
         text-white
         ;
         cursor: pointer;
@@ -24,7 +28,6 @@
         @apply
         rounded-lg
         font-medium
-        hover:bg-blue-50
         transition-colors
         w-fit 
         px-6 
@@ -34,6 +37,7 @@
 
         bg-white
         text-black
+        hover:bg-white/80
         ;
         
         cursor: pointer;
