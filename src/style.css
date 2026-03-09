@@ -3,16 +3,42 @@
 @layer components {
 
     .btn-primary {
-        @apply px-6 
-        py-3
-        bg-white
-        text-black
+        @apply
         rounded-lg
         font-medium
         hover:bg-blue-50
-        transition-colors;
+        transition-colors
+        w-fit 
+        px-6 
+        py-3 
+        text-sm 
+        sm:text-base 
+
+        bg-[#FF7230] 
+        text-white
+        ;
         cursor: pointer;
     }
+
+    .btn-secondary {
+        @apply
+        rounded-lg
+        font-medium
+        hover:bg-blue-50
+        transition-colors
+        w-fit 
+        px-6 
+        py-3 
+        text-sm 
+        sm:text-base 
+
+        bg-white
+        text-black
+        ;
+        
+        cursor: pointer;
+    }
+    
 
     .debug- {
         @apply border border-white;

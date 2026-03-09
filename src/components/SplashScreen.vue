@@ -21,7 +21,7 @@ const global = inject('global');
       <router-link
         v-if="global.features.camera"
         to="/cam"
-        class="btn-primary rounded-60 bg-[#FF7230] text-white w-fit px-6 py-3 text-sm sm:text-base mb-16">
+        class="btn-primary mb-16">
         Scopri l'esperienza
       </router-link>
     </div>
