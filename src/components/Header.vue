@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-    <div class="relative grid grid-cols-2 md:grid-cols-2 w-full py-12 md:pt-4 md:pb-0 z-20">
+    <div class="relative grid grid-cols-2 md:grid-cols-2 w-full py-12 md:pt-4 md:pb-0 z-20 print:md:py-0 print:px-4">
         <div class="flex">
             <router-link to="/" class="main-header text-white flex items-center">
                 <div class="flex items-center">

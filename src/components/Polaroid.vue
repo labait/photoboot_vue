@@ -31,6 +31,7 @@ defineProps({
     --polaroid-height: 380px;
     --polaroid-padding: 20px;
 }
+
 .polaroid {
     width: var(--polaroid-width);
     height: var(--polaroid-height);

@@ -5,7 +5,6 @@ import { storage, db } from './firebase'
 import { ref as storageRef, uploadString, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { collection, addDoc, serverTimestamp, updateDoc, doc, getDoc } from 'firebase/firestore'
 
-// import Auth from './components/Auth.vue'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import Loading from './components/Loading.vue'
@@ -139,7 +138,7 @@ provide('getStorageUrl', getStorageUrl);
       <Loading v-if="global.isLoading" />
       <div class="flex justify-end w-full print:hidden z-30">
         <div class="auth-btn">
-          <Auth />
+          <Auth/>
         </div>
       </div>
       <Header />
