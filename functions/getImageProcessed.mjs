@@ -47,8 +47,8 @@ export default async (request, context) => {
 
     return new Response(JSON.stringify(docData))
   } catch (error) {
-    return new Response(error.toString(), {
-      status: 500,
-    })
+    return new Response(JSON.stringify({
+      error: error.toString(),
+    }))
   }
 }

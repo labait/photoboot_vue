@@ -40,6 +40,14 @@ const getStorageUrl = async (str) => {
   return storageUrl
 }
 
+const processImage = async (docId) => {
+  // call process function
+  const processUrl = `/.netlify/functions/processImage?docId=${docId}`;
+  console.log('processUrl', processUrl);
+  const response = await fetch(processUrl);
+  return true;
+}
+
 const uploadImage = async (imageDataUrl, imageId) => {
   try {
     global.value.isLoading = true;
@@ -64,18 +72,7 @@ const uploadImage = async (imageDataUrl, imageId) => {
     global.value.docId = docRef.id;
     console.log('docData',global.value)
 
-    // call process function
-    const processUrl = `/.netlify/functions/processImage?docId=${docRef.id}`;
-    console.log('processUrl', processUrl);
-    const response = await fetch(processUrl);
-    const result = await response.json()
-
-    // update the status to processing
-    await updateDoc(docRef, {
-      status: 'processing',
-    })
-
-    return true;
+    return processImage(docRef.id)
 
   } catch (error) {
     console.error('Error uploading image:', error)
@@ -95,13 +92,14 @@ const getResult = async (docId) => {
   console.log(`getImageProcessedUrl ${docId}, checkCount ${checkCount}`, getImageProcessedUrl);
   const response = await fetch(getImageProcessedUrl);
   const data = await response.json()
+  console.log('getResult data', data)
 
   checkCount = checkCount + 1;
   await updateDoc(docRef, {
     check_count: checkCount,
   })
 
-  if (data.process_result.status == "succeeded") {    
+  if (data?.process_result?.status == "succeeded") {    
     global.value.docData = data;
     console.log('docData', data)
   } else {
@@ -122,11 +120,12 @@ const getResult = async (docId) => {
 
 
 const detailUrl = (docId) => {
-    return `${window.location.origin}/detail/${docId}`
+  return `${window.location.origin}/detail/${docId}`
 }
 
 
 provide('global', global);
+provide('processImage', processImage);
 provide('uploadImage', uploadImage);
 provide('getResult', getResult);
 provide('detailUrl', detailUrl);
@@ -138,7 +137,7 @@ provide('getStorageUrl', getStorageUrl);
   <main class="p-4 md:p-8">
     <div class="flex flex-col debug max-w-7xl mx-auto">
       <Loading v-if="global.isLoading" />
-      <div class="flex justify-end w-full print:hidden">
+      <div class="flex justify-end w-full print:hidden z-30">
         <div class="auth-btn">
           <Auth />
         </div>

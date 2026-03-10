@@ -2,7 +2,6 @@
 import { ref, onMounted, inject } from 'vue'
 import { useRoute } from 'vue-router'
 
-import Header from './Header.vue'
 import Polaroid from './Polaroid.vue'
 import Debug from './Debug.vue'
 
@@ -16,15 +15,13 @@ const global = inject('global')
 const getResult = inject('getResult')
 const detailUrl = inject('detailUrl')
 const getStorageUrl = inject('getStorageUrl')
-
-inject('detailUrl', detailUrl)
+const processImage = inject('processImage')
 
 
 const loadData = async () => {
   //co  nfig.value.isLoading = true
   const docRef = doc(db, 'items', docId.value)
   global.value.docData = (await getDoc(docRef)).data()
-  console.log(global.value.docData)
   await getResult(docId.value)
 
   const original = document.querySelector('.original')
@@ -37,6 +34,17 @@ const loadData = async () => {
 
   global.value.isLoading = false
 }
+
+
+const reProcess = async () => {
+  global.value.isLoading = true;
+  window.location.reload()
+  if(confirm('Sei sicuro di voler rielaborare l\'immagine?')) {
+    await processImage(docId.value)
+  }
+  
+}
+
 
 
 onMounted(async () => {
@@ -59,6 +67,13 @@ const print = () => {
     <div v-if="global.docData" class="polaroids relative z-10 flex flex-col items-center justify-center overflow-visible">
       <Polaroid class="original">
         <img :src="global.docData.image_source" class="w-full h-full object-cover block" />
+        <template v-slot:footer>
+          <a 
+            href="#"
+            class="w-full h-10 text-center hover:underline text-xl"
+            @click="reProcess"
+          >re-process</a>
+        </template>
       </Polaroid>
       <Polaroid :url="detailUrl(docId)" class="processed mb-16 active">
         <img v-if="global.docData.image_processed" :src="global.docData.image_processed" class="w-full h-full object-cover block" />

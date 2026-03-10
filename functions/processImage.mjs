@@ -33,7 +33,7 @@ export default async (request, context) => {
     }
     */
 
-    /* flux-2-pro */
+    /* flux-2-pro
     const apiUrl = 'https://api.replicate.com/v1/models/black-forest-labs/flux-2-pro/predictions'
     const body = {
       input: {
@@ -45,8 +45,20 @@ export default async (request, context) => {
         output_quality: 80,
         safety_tolerance: 2
       }
-    }
+    }*/
 
+    /* qwen-image-edit-2511 */
+    const apiUrl = 'https://api.replicate.com/v1/models/qwen/qwen-image-edit-2511/predictions'
+    const body = {
+      "input": {
+        "image": [imageUrl],
+        "prompt": process.env.VITE_PROMPT,
+        "go_fast": true,
+        //"aspect_ratio": "3:4",
+        "output_format": "png",
+        "output_quality": 95
+      }
+    }
 
     const response = await fetch(
       apiUrl,
@@ -63,9 +75,11 @@ export default async (request, context) => {
     data.result = result;
     // update doc with result
     await updateDoc(doc(db, 'items', docId), {
+      status: 'created',
+      image_processed: null,
       process_result: result,
     });
-
+    console.log('processResult', result)
     return new Response(JSON.stringify(data))
   } catch (error) {
     return new Response(error.toString(), {
