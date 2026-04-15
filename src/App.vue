@@ -16,8 +16,9 @@ const urlParams = new URLSearchParams(window.location.search);
 
 const global = ref({
   countDownSeconds: 3,
+  poster: null,
   isDebug: () =>{
-    return urlParams.has('debug') || false;
+    return urlParams.has('debug') || true;
   },
   isLoading: false,
   currentImage: null,
