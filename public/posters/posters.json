@@ -1,31 +1,31 @@
 [
   {
     "name": "Clockwork Orange",
-    "file_path": "./images/clockwork_orange.jpg"
+    "file_path": "./images/clockwork-orange.jpg"
   },
   {
     "name": "Pulp Fiction",
-    "file_path": "./images/pulp_fiction.jpg"
+    "file_path": "./images/pulp-fiction.jpg"
   },
   {
     "name": "Barbie Fairytopia",
-    "file_path": "./images/barbie_fairytopia.jpg"
+    "file_path": "./images/barbie-fairytopia.jpg"
   },
   {
     "name": "Breaking Bad",
-    "file_path": "./images/breaking_bad.jpg"
+    "file_path": "./images/breaking-bad.jpg"
   },
   {
     "name": "Harry Potter",
-    "file_path": "./images/harry_potter.jpg"
+    "file_path": "./images/harry-potter.jpg"
   },
   {
     "name": "Il Silenzio Degli Innocenti",
-    "file_path": "./images/il_silenzio_degli_innocenti.jpg"
+    "file_path": "./images/il-silenzio-degli-innocenti.jpg"
   },
   {
     "name": "Stranger Things",
-    "file_path": "./images/stranger_things.jpg"
+    "file_path": "./images/stranger-things.jpg"
   },
   {
     "name": "Avatar",
@@ -33,10 +33,10 @@
   },
   {
     "name": "Indiana Jones",
-    "file_path": "./images/indiana_jones.jpg"
+    "file_path": "./images/indiana-jones.jpg"
   },
   {
     "name": "La fabbrica del cioccolato",
-    "file_path": "./images/la_fabbrica_del_cioccolato.jpg"
+    "file_path": "./images/la-fabbrica-del-cioccolato.jpg"
   }
 ]
