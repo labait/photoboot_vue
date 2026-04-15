@@ -47,7 +47,7 @@ export default async (request, context) => {
       }
     }*/
 
-    /* qwen-image-edit-2511 */
+    /* qwen-image-edit-2511 
     const apiUrl = 'https://api.replicate.com/v1/models/qwen/qwen-image-edit-2511/predictions'
     const body = {
       "input": {
@@ -59,6 +59,24 @@ export default async (request, context) => {
         "output_quality": 95
       }
     }
+    */
+    const apiUrl = 'https://api.replicate.com/v1/models/google/nano-banana-pro/predictions';
+    const imageReerence = 'https://mbpromag.eu.ngrok.io/posters/images/clockwork-orange.jpg'
+    const body = {
+      "input": {
+        "allow_fallback_model": false,
+        "aspect_ratio": "4:5",
+        "image_input": [
+          imageReerence,
+          imageUrl
+        ],
+        "output_format": "png",
+        "prompt": "Two images provided: a first is a movie poster and second a person\'s photo.\\nKeep the exact face and facial features of the person.\\nReplace the main character of the poster with this person,\\nif multiple subjects are present, identify and replace only the protagonist.\\nMatch their clothing, lighting and color grading to the poster\'s style and mood.\\nPreserve typography, composition and background.\\nCinematic quality, seamless integration, high detail.",
+        "resolution": "1K",
+        "safety_filter_level": "block_only_high"
+      }
+    };
+
 
     const response = await fetch(
       apiUrl,

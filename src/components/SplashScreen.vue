@@ -20,7 +20,7 @@ const global = inject('global');
     <div class="flex relative z-20 items-center justify-start mb-16">
       <router-link
         v-if="global.features.camera"
-        to="/cam"
+        to="/posters"
         class="btn-primary mr-4">
         Scopri l'esperienza
       </router-link>
