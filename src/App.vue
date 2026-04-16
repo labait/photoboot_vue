@@ -9,6 +9,7 @@ import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import Loading from './components/Loading.vue'
 import Auth from './components/Auth.vue'
+import Debug from './components/Debug.vue'
 
 
 const edition = import.meta.env.VITE_EDITION 
@@ -18,7 +19,7 @@ const global = ref({
   countDownSeconds: 3,
   poster: null,
   isDebug: () =>{
-    return urlParams.has('debug') || true;
+    return urlParams.has('debug') || false;
   },
   isLoading: false,
   currentImage: null,
@@ -146,9 +147,9 @@ provide('getStorageUrl', getStorageUrl);
       <router-view />
       <Footer />
     </div>
+    <Debug v-if="global.isDebug()" />
   </main>
 </template>
 
 <style>
-
 </style>
