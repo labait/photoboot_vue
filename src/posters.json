@@ -1,7 +1,7 @@
 [
   {
     "name": "Clockwork Orange",
-    "file_path": "./images/clockwork-orange.jpg"
+    "file_path": "./images/clockworkorange.jpg"
   },
   {
     "name": "Pulp Fiction",
@@ -9,23 +9,23 @@
   },
   {
     "name": "Barbie Fairytopia",
-    "file_path": "./images/barbie-fairytopia.jpg"
+    "file_path": "./images/barbie-fairytopia.png"
   },
   {
     "name": "Breaking Bad",
-    "file_path": "./images/breaking-bad.jpg"
+    "file_path": "./images/breaking-bad.png"
   },
   {
     "name": "Harry Potter",
-    "file_path": "./images/harry-potter.jpg"
+    "file_path": "./images/harry-potter.png"
   },
   {
     "name": "Il Silenzio Degli Innocenti",
-    "file_path": "./images/il-silenzio-degli-innocenti.jpg"
+    "file_path": "./images/il-silenzio-degli-innocenti.png"
   },
   {
     "name": "Stranger Things",
-    "file_path": "./images/stranger-things.jpg"
+    "file_path": "./images/stranger-things.png"
   },
   {
     "name": "Avatar",
