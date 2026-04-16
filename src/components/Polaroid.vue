@@ -45,8 +45,6 @@ defineProps({
     }   
     .qrcode {
         position: absolute;
-        bottom: -5px;
-        right: -5px;
         transition: opacity 0.3s ease;
         z-index: 1000;
         border: 5px solid white;
