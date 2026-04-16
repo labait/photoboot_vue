@@ -35,8 +35,6 @@ defineProps({
 .polaroid {
     width: var(--polaroid-width);
     height: var(--polaroid-height);
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     .polaroid-inner {
         margin: var(--polaroid-padding);
         width: calc(var(--polaroid-width) - var(--polaroid-padding) * 2);

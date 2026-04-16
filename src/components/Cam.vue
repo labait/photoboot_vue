@@ -19,8 +19,6 @@ const uploadImage = inject('uploadImage');
 const sound1 = new Audio('/click.mp3');
 const countDown = ref(0);
 
-const global = inject('global')
-
 
 onMounted(async () => {
   await getVideoDevices();
@@ -130,7 +128,7 @@ async function shot() {
     isUploading.value = true;
     const result = await uploadImage(image.value, imageId);
     if (result) {
-      //console.log('Image processed successfully with result:', result);
+    console.log('Image processed successfully with result:', result);
       // go to detail page
       global.value.isUploading = false
       global.value.isLoading = false
@@ -168,15 +166,9 @@ async function shot() {
       <p class="text-white font-medium text-[8vw] sm:text-[4vw] text-center">
         LABA'S PHOTOBOOTH
       </p>
-      <div class="relative">
-        <polaroid class="mb-8">
-          <video ref="video" class="cam object-cover"></video>
-        </polaroid>
-        <polaroid v-if="global.poster && false" class="absolute top-0 left-0 scale-50 z-10 bottom-0 right-0">
-          <img :src="`/posters/${global.poster.file_path}`" :alt="global.poster.name" class="w-full h-full object-cover" />
-        </polaroid>
-      </div>
-
+      <polaroid class="mb-8">
+        <video ref="video" class="cam object-cover"></video>
+      </polaroid>
       <select v-model="selectedDevice" @change="changeCamera" class="mt-2 p-2 rounded text-white">
         <option v-for="device in videoDevices" :key="device.deviceId" :value="device.deviceId">
           {{ device.label || `Camera ${videoDevices.indexOf(device) + 1}` }}
