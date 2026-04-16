@@ -91,8 +91,6 @@ const print = () => {
         <button class="btn-primary" @click="print">Stampa</button>
       </div>
     </div>
-
-    <Debug :data="global.docData" v-if="global.isDebug()" />
   </div>
 </template>
 
