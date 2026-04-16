@@ -13,6 +13,7 @@ const global = inject('global');
         LABA'S PHOTOBOOTH
       </p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 md:mb-8">
+        <img src="../assets/croniche-disorganiche.png" class="w-full h-auto object-cover block">
       <!-- commento  <img src="../assets/txt.svg" class="w-full h-auto object-cover block">
         <img src="../assets/polaroid.svg" class="w-full h-auto object-cover block"> -->
       </div>
