@@ -8,16 +8,17 @@ const global = inject('global');
 
 <template>
   <div class="flex flex-col justify-start w-full">
-    <div>
-      <p class="text-white font-medium text-[8vw] sm:text-[4vw] py-2">
-        LABA'S PHOTOBOOTH
+    <div class="grid grid-cols-2 gap-4 items-center">
+      <p class="text-white font-bold text-[8vw] md:text-[6vw] py-2">
+        LABA'S<br>PHOTOBOOTH
       </p>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 md:mb-8">
-        <img src="../assets/croniche-disorganiche.png" class="w-full h-auto object-cover block">
-      <!-- commento  <img src="../assets/txt.svg" class="w-full h-auto object-cover block">
+      <div class="flex justify-center mb-6 md:mb-8">
+        <img src="../assets/croniche-disorganiche.png" class="h-auto object-contain max-w-sm">
+        <!-- commento  <img src="../assets/txt.svg" class="w-full h-auto object-cover block">
         <img src="../assets/polaroid.svg" class="w-full h-auto object-cover block"> -->
       </div>
     </div>
+
     <div class="flex relative z-20 items-center justify-start mb-16">
       <router-link
         v-if="global.features.camera"
