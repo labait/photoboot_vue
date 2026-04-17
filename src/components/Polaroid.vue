@@ -15,7 +15,7 @@ defineProps({
     <div class="polaroid">
        <div class="polaroid-inner">
             <a v-if="url" :href="url" class="qrcode block">
-                <qrcode-vue :value="url" :size="100" level="H" />
+                <qrcode-vue :value="url" :size="50" level="H" />
             </a>
             <slot /> 
        </div>
@@ -27,8 +27,8 @@ defineProps({
 
 <style scoped>
 .polaroid {
-    --polaroid-width: 420px;
-    --polaroid-height: 380px;
+    --polaroid-width: 340px;
+    --polaroid-height: 450px;
     --polaroid-padding: 20px;
 }
 
@@ -39,7 +39,6 @@ defineProps({
         margin: var(--polaroid-padding);
         width: calc(var(--polaroid-width) - var(--polaroid-padding) * 2);
         height: calc(var(--polaroid-height) - var(--polaroid-padding) * 4);
-        background-color: #999;
         overflow: hidden;
         position: relative;
     }   

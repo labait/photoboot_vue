@@ -152,7 +152,6 @@ const clickPolaroid = (item) => {
     position: absolute;
     transition: transform 0.3s ease;
     cursor: pointer;
-    box-shadow: 0 20px 20px rgba(0, 0, 0, 0.6);
 }
 
 .image-processed {
