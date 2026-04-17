@@ -24,14 +24,14 @@ function selectPoster(poster) {
 
 <template>
   <div class="posters-container container mx-auto max-w-7xl">
-    <div class="h-35 flex items-center justify-center">
+    <div class="h-20 flex items-center justify-center">
       <h1 class="text-white font-bold text-[6vw] sm:text-[2vw] py-2">Seleziona il tuo poster preferito:</h1>
     </div>
     <div class="relative flex items-center py-4">
       <button @click="prev" class="absolute left-0 z-10 text-white text-5xl px-4 hover:text-orange-400 transition-colors">
         ‹
       </button>
-      <div class="overflow-hidden w-full px-10">
+      <div class="overflow-visible w-full px-10">
         <div
           class="flex transition-transform duration-500 ease-in-out"
           :style="{ transform: `translateX(calc(-${current * 100}% - ${current * gap}px))`, gap: `${gap}px` }"
