@@ -31,7 +31,7 @@ function selectPoster(poster) {
       <button @click="prev" class="absolute left-0 z-10 text-white text-5xl px-4 hover:text-orange-400 transition-colors">
         ‹
       </button>
-      <div class="overflow-visible w-full px-10">
+      <div class="overflow-hidden w-full px-10">
         <div
           class="flex transition-transform duration-500 ease-in-out"
           :style="{ transform: `translateX(calc(-${current * 100}% - ${current * gap}px))`, gap: `${gap}px` }"
@@ -45,7 +45,7 @@ function selectPoster(poster) {
             
               <a v-for="poster in posters.slice((group - 1) * visible, group * visible)"
               :key="poster.name"
-              class="poster cursor-pointer border bg-[#4f485f] rounded-lg p-4 flex flex-col items-center hover:bg-[#7069a2] hover:scale-105 transition-transform duration-300 flex-shrink-0"
+              class="poster cursor-pointer border bg-[#4f485f] rounded-lg p-4 flex flex-col items-center hover:bg-[#7069a2] hover:scale-102 transition-transform duration-300 flex-shrink-0"
               style="width: calc(20% - 13px)"
                 @click="selectPoster(poster)"
           >
