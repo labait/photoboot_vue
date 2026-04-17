@@ -17,7 +17,7 @@ function prev() {
 }
 
 function selectPoster(poster) {
-  global.poster = poster
+  global.value.poster = poster
   router.push('/cam')
 }
 </script>
@@ -47,7 +47,7 @@ function selectPoster(poster) {
               :key="poster.name"
               class="poster cursor-pointer border bg-[#4f485f] rounded-lg p-4 flex flex-col items-center hover:bg-[#7069a2] hover:scale-105 transition-transform duration-300 flex-shrink-0"
               style="width: calc(20% - 13px)"
-              @click="() => { global.poster = poster; router.push('/cam'); }"
+                @click="selectPoster(poster)"
           >
               <div class="title text-lg font-bold mb-2 text-left w-full h-16 text-white">{{ poster.name }}</div>
               <div class="w-full h-64 overflow-hidden rounded">
