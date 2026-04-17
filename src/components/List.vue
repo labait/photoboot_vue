@@ -115,7 +115,7 @@ const clickPolaroid = (item) => {
 
 
 <template>
-    <div v-if="!global.isLoading" class="flex h-screen absolute top-0 left-0 w-full items-center justify-center polaroids">
+    <div v-if="!global.isLoading" class="flex h-screen absolute top-60px left-0 w-full items-center justify-center polaroids">
         <Polaroid v-for="item in items" :url="detailUrl(item.docId)" :key="item.docId" :id="`item-${item.docId}`" :data-image-id="item.image_id" class="polaroid" >
             <img :src="item.image_source" class="absolute top-0 left-0 w-full h-full object-cover block image-source" @click="clickPolaroid(item)" />
             <img :src="item.image_processed" class="absolute top-0 left-0 w-full h-full object-cover block image-processed" @click="clickPolaroid(item)" />

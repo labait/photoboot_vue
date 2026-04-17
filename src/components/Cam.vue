@@ -170,9 +170,6 @@ async function shot() {
     </div>
 
     <div class="relative z-10 flex flex-col items-center w-full">
-      <p class="text-white font-medium text-[8vw] sm:text-[4vw] text-center">
-        LABA'S PHOTOBOOTH
-      </p>
       <polaroid class="mb-8">
         <video ref="video" class="cam object-cover"></video>
       </polaroid>
